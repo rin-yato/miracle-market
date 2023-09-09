@@ -2,14 +2,29 @@
   "name": "api",
   "version": "0.0.0",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "bun run --watch src/index.ts"
+    "dev": "bun run --watch src/index.ts",
+    "db:push": "drizzle-kit push:pg",
+    "studio": "drizzle-kit studio --port 3010"
   },
   "dependencies": {
-    "elysia": "latest"
+    "@elysiajs/cookie": "^0.6.1",
+    "@elysiajs/cors": "^0.6.0",
+    "@elysiajs/static": "^0.6.0",
+    "@elysiajs/swagger": "^0.6.1",
+    "@lucia-auth/adapter-postgresql": "^2.0.1",
+    "@lucia-auth/adapter-session-redis": "^2.1.1",
+    "@sinclair/typebox": "^0.31.14",
+    "@types/pg": "^8.10.2",
+    "dotenv": "^16.3.1",
+    "drizzle-orm": "^0.28.6",
+    "elysia": "latest",
+    "lucia": "latest",
+    "redis": "^4.6.8"
   },
   "devDependencies": {
-    "bun-types": "latest"
+    "bun-types": "latest",
+    "drizzle-kit": "^0.19.13"
   },
-  "module": "src/index.js"
+  "module": "src/index.js",
+  "type": "module"
 }
