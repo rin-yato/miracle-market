@@ -23,25 +23,37 @@ importers:
 
   apps/admin:
     dependencies:
-      '@kinde-oss/kinde-typescript-sdk':
-        specifier: ^1.0.4
-        version: 1.0.4
+      '@tabler/icons-svelte':
+        specifier: ^2.34.0
+        version: 2.34.0(svelte@4.0.5)
       bits-ui:
         specifier: ^0.5.7
         version: 0.5.7(svelte@4.0.5)
       clsx:
         specifier: ^2.0.0
         version: 2.0.0
+      formsnap:
+        specifier: ^0.0.9
+        version: 0.0.9(svelte@4.0.5)(sveltekit-superforms@1.6.1)(zod@3.22.2)
       radix-icons-svelte:
         specifier: ^1.2.1
         version: 1.2.1
+      sveltekit-superforms:
+        specifier: ^1.6.1
+        version: 1.6.1(@sveltejs/kit@1.20.4)(svelte@4.0.5)(zod@3.22.2)
       tailwind-merge:
         specifier: ^1.14.0
         version: 1.14.0
       tailwind-variants:
         specifier: ^0.1.14
         version: 0.1.14(tailwindcss@3.3.3)
+      zod:
+        specifier: ^3.22.2
+        version: 3.22.2
     devDependencies:
+      '@iconify/svelte':
+        specifier: ^3.1.4
+        version: 3.1.4(svelte@4.0.5)
       '@sveltejs/adapter-auto':
         specifier: ^2.0.0
         version: 2.0.0(@sveltejs/kit@1.20.4)
@@ -101,25 +113,22 @@ importers:
     dependencies:
       '@elysiajs/cookie':
         specifier: ^0.6.1
-        version: 0.6.1(elysia@0.6.19)
+        version: 0.6.1(elysia@0.6.20)
       '@elysiajs/cors':
         specifier: ^0.6.0
-        version: 0.6.0(elysia@0.6.19)
-      '@elysiajs/lucia-auth':
-        specifier: ^0.0.0-exp-20230623.312
-        version: 0.0.0-exp-20230623.312(elysia@0.6.19)
+        version: 0.6.0(elysia@0.6.20)
       '@elysiajs/static':
         specifier: ^0.6.0
-        version: 0.6.0(elysia@0.6.19)
+        version: 0.6.0(elysia@0.6.20)
       '@elysiajs/swagger':
         specifier: ^0.6.1
-        version: 0.6.1(elysia@0.6.19)
+        version: 0.6.1(elysia@0.6.20)
       '@lucia-auth/adapter-postgresql':
         specifier: ^2.0.1
-        version: 2.0.1(lucia@2.4.0)
+        version: 2.0.1(lucia@2.5.0)
       '@lucia-auth/adapter-session-redis':
         specifier: ^2.1.1
-        version: 2.1.1(lucia@2.4.0)(redis@4.6.8)
+        version: 2.1.1(lucia@2.5.0)(redis@4.6.8)
       '@sinclair/typebox':
         specifier: ^0.31.14
         version: 0.31.14
@@ -134,10 +143,10 @@ importers:
         version: 0.28.6(@types/pg@8.10.2)(bun-types@1.0.1)
       elysia:
         specifier: latest
-        version: 0.6.19(@sinclair/typebox@0.31.14)
+        version: 0.6.20(@sinclair/typebox@0.31.14)
       lucia:
-        specifier: ^2.4.0
-        version: 2.4.0
+        specifier: latest
+        version: 2.5.0
       redis:
         specifier: ^4.6.8
         version: 4.6.8
@@ -393,7 +402,7 @@ packages:
     resolution: {integrity: sha512-ps5qF0tMxWRVu+V5gvCRrQNqlY92aTnIKdq27gm9LZMSdaKYZt6AVvSK1dlUMzs6Rt0Jm80b+eWct6xShBKhIw==}
     dev: true
 
-  /@elysiajs/cookie@0.6.1(elysia@0.6.19):
+  /@elysiajs/cookie@0.6.1(elysia@0.6.20):
     resolution: {integrity: sha512-E/swYyYcgfUa3LtVjmJfwsL7GUF9nbp+gxouWs0z0z305UaBgx7N0zclQnoaRdL5lPn73J/bEkfTjL0hOBJHIg==}
     peerDependencies:
       elysia: '>= 0.6.0'
@@ -402,41 +411,31 @@ packages:
       '@types/cookie-signature': 1.1.0
       cookie: 0.5.0
       cookie-signature: 1.2.1
-      elysia: 0.6.19(@sinclair/typebox@0.31.14)
+      elysia: 0.6.20(@sinclair/typebox@0.31.14)
     dev: false
 
-  /@elysiajs/cors@0.6.0(elysia@0.6.19):
+  /@elysiajs/cors@0.6.0(elysia@0.6.20):
     resolution: {integrity: sha512-TpkdYRVDLJYn9XHwO3eFu1GG1/p1xZMcujU354N0YG5pbFNy5kSeKFDZRMoh14fPvkRN7tWgRpsZfuCs15IHKA==}
     peerDependencies:
       elysia: '>= 0.5.12'
     dependencies:
-      elysia: 0.6.19(@sinclair/typebox@0.31.14)
+      elysia: 0.6.20(@sinclair/typebox@0.31.14)
     dev: false
 
-  /@elysiajs/lucia-auth@0.0.0-exp-20230623.312(elysia@0.6.19):
-    resolution: {integrity: sha512-oLSaJlZ/q8exBRrbMP2tIb7qDR8UdFTaG0efQjdsYnRJHCeNlvl9MUXxac/miUaCHVKPS+hZJmTl7172CmxsLw==}
-    peerDependencies:
-      elysia: '>= 0.5.12'
-    dependencies:
-      '@lucia-auth/oauth': 1.2.1(lucia-auth@1.8.0)
-      elysia: 0.6.19(@sinclair/typebox@0.31.14)
-      lucia-auth: 1.8.0
-    dev: false
-
-  /@elysiajs/static@0.6.0(elysia@0.6.19):
+  /@elysiajs/static@0.6.0(elysia@0.6.20):
     resolution: {integrity: sha512-06M0J3HXQiX3BivJIMbL3WNXzudzQNHIPlU0JBZo2/gp8dX8GGOZbjIhyF6j4legEQE86omTBRHt2dUxb4yZZg==}
     peerDependencies:
       elysia: '>= 0.5.12'
     dependencies:
-      elysia: 0.6.19(@sinclair/typebox@0.31.14)
+      elysia: 0.6.20(@sinclair/typebox@0.31.14)
     dev: false
 
-  /@elysiajs/swagger@0.6.1(elysia@0.6.19):
+  /@elysiajs/swagger@0.6.1(elysia@0.6.20):
     resolution: {integrity: sha512-1pV0iv2AoNcRt4cYH+I5WNN2Ie9u2sRjk8Zj+Ch3ObYjWXW3ZY0fd8iGraOkZ6uOu79PTCfNf1bsHP7wWgO3Xw==}
     peerDependencies:
       elysia: '>= 0.6.7'
     dependencies:
-      elysia: 0.6.19(@sinclair/typebox@0.31.14)
+      elysia: 0.6.20(@sinclair/typebox@0.31.14)
       lodash.clonedeep: 4.5.0
     dev: false
 
@@ -460,7 +459,6 @@ packages:
     cpu: [arm64]
     os: [android]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/android-arm@0.18.20:
@@ -469,7 +467,6 @@ packages:
     cpu: [arm]
     os: [android]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/android-x64@0.18.20:
@@ -478,7 +475,6 @@ packages:
     cpu: [x64]
     os: [android]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/darwin-arm64@0.18.20:
@@ -487,7 +483,6 @@ packages:
     cpu: [arm64]
     os: [darwin]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/darwin-x64@0.18.20:
@@ -496,7 +491,6 @@ packages:
     cpu: [x64]
     os: [darwin]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/freebsd-arm64@0.18.20:
@@ -505,7 +499,6 @@ packages:
     cpu: [arm64]
     os: [freebsd]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/freebsd-x64@0.18.20:
@@ -514,7 +507,6 @@ packages:
     cpu: [x64]
     os: [freebsd]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/linux-arm64@0.18.20:
@@ -523,7 +515,6 @@ packages:
     cpu: [arm64]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/linux-arm@0.18.20:
@@ -532,7 +523,6 @@ packages:
     cpu: [arm]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/linux-ia32@0.18.20:
@@ -541,7 +531,6 @@ packages:
     cpu: [ia32]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/linux-loong64@0.18.20:
@@ -550,7 +539,6 @@ packages:
     cpu: [loong64]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/linux-mips64el@0.18.20:
@@ -559,7 +547,6 @@ packages:
     cpu: [mips64el]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/linux-ppc64@0.18.20:
@@ -568,7 +555,6 @@ packages:
     cpu: [ppc64]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/linux-riscv64@0.18.20:
@@ -577,7 +563,6 @@ packages:
     cpu: [riscv64]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/linux-s390x@0.18.20:
@@ -586,7 +571,6 @@ packages:
     cpu: [s390x]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/linux-x64@0.18.20:
@@ -595,7 +579,6 @@ packages:
     cpu: [x64]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/netbsd-x64@0.18.20:
@@ -604,7 +587,6 @@ packages:
     cpu: [x64]
     os: [netbsd]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/openbsd-x64@0.18.20:
@@ -613,7 +595,6 @@ packages:
     cpu: [x64]
     os: [openbsd]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/sunos-x64@0.18.20:
@@ -622,7 +603,6 @@ packages:
     cpu: [x64]
     os: [sunos]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/win32-arm64@0.18.20:
@@ -631,7 +611,6 @@ packages:
     cpu: [arm64]
     os: [win32]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/win32-ia32@0.18.20:
@@ -640,7 +619,6 @@ packages:
     cpu: [ia32]
     os: [win32]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/win32-x64@0.18.20:
@@ -649,7 +627,6 @@ packages:
     cpu: [x64]
     os: [win32]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@eslint-community/eslint-utils@4.4.0(eslint@8.48.0):
@@ -726,6 +703,19 @@ packages:
     resolution: {integrity: sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==}
     dev: true
 
+  /@iconify/svelte@3.1.4(svelte@4.0.5):
+    resolution: {integrity: sha512-YDwQlN46ka8KPRayDb7TivmkAPizfTXi6BSRNqa1IV0+byA907n8JcgQafA7FD//pW5XCuuAhVx6uRbKTo+CfA==}
+    peerDependencies:
+      svelte: '*'
+    dependencies:
+      '@iconify/types': 2.0.0
+      svelte: 4.0.5
+    dev: true
+
+  /@iconify/types@2.0.0:
+    resolution: {integrity: sha512-+wluvCrRhXrhyOmRDJ3q8mux9JkKy5SJ/v8ol2tu4FVjyYvtEzkc/3pK15ET6RKg4b4w4BmTk1+gsCUhf21Ykg==}
+    dev: true
+
   /@jridgewell/gen-mapping@0.3.3:
     resolution: {integrity: sha512-HLhSWOLRi875zjjMG/r+Nv0oCW8umGb0BgEhyX3dDX3egwZtB8PqLnjz3yedt8R5StBrzcg4aBpnh8UA9D1BoQ==}
     engines: {node: '>=6.0.0'}
@@ -751,13 +741,7 @@ packages:
       '@jridgewell/resolve-uri': 3.1.1
       '@jridgewell/sourcemap-codec': 1.4.15
 
-  /@kinde-oss/kinde-typescript-sdk@1.0.4:
-    resolution: {integrity: sha512-/RXIBbPrdZBa3cY/JCjdPcsbm/EoithdZI3B9QNQOmw0fbVoUUsOURhobVHPRV8q9ePdcBrqtDzQUsv06YkAng==}
-    dependencies:
-      uncrypto: 0.1.3
-    dev: false
-
-  /@lucia-auth/adapter-postgresql@2.0.1(lucia@2.4.0):
+  /@lucia-auth/adapter-postgresql@2.0.1(lucia@2.5.0):
     resolution: {integrity: sha512-HrgyCsHXEWMD3oF2vSzbqucwGR9zCNvsV5MTV/J3EkiTHskjJXRoVqIoOONeLsdBTy+nIciyoWNMAYe9LJj3tA==}
     peerDependencies:
       lucia: ^2.0.0
@@ -769,10 +753,10 @@ packages:
       postgres:
         optional: true
     dependencies:
-      lucia: 2.4.0
+      lucia: 2.5.0
     dev: false
 
-  /@lucia-auth/adapter-session-redis@2.1.1(lucia@2.4.0)(redis@4.6.8):
+  /@lucia-auth/adapter-session-redis@2.1.1(lucia@2.5.0)(redis@4.6.8):
     resolution: {integrity: sha512-RWZRr02nzCM7AxUpC9J/k4hbwdlltuMD7HV7MN98WhF2nF1WV7iF+QjWx2v52J4mDN1UyyIKeXR9TKgtM95rMQ==}
     peerDependencies:
       '@upstash/redis': ^1.20.0
@@ -787,16 +771,8 @@ packages:
       redis:
         optional: true
     dependencies:
-      lucia: 2.4.0
+      lucia: 2.5.0
       redis: 4.6.8
-    dev: false
-
-  /@lucia-auth/oauth@1.2.1(lucia-auth@1.8.0):
-    resolution: {integrity: sha512-z6LOdDmh9Bmu1Jv1RkcSiGes8Qjk3uNZc/7S08wCMICtZ31m8KXnkhQjsV1HvSZXv6tkmG4Y9NLjpH2V/su38w==}
-    peerDependencies:
-      lucia-auth: 1.x
-    dependencies:
-      lucia-auth: 1.8.0
     dev: false
 
   /@melt-ui/svelte@0.41.3(svelte@4.0.5):
@@ -863,7 +839,6 @@ packages:
 
   /@polka/url@1.0.0-next.23:
     resolution: {integrity: sha512-C16M+IYz0rgRhWZdCmK+h58JMv8vijAA61gmz2rspCSwKwzBebpdcsiUmwrtJRdphuY30i6BSLEOP8ppbNLyLg==}
-    dev: true
 
   /@redis/bloom@1.2.0(@redis/client@1.5.9):
     resolution: {integrity: sha512-HG2DFjYKbpNmVXsa0keLHp/3leGJz1mjh09f2RLGGLQZzSHpkmZWuwJbAvo3QcRY8p80m5+ZdXZdYOSBLlp7Cg==}
@@ -956,7 +931,6 @@ packages:
       vite: 4.4.2
     transitivePeerDependencies:
       - supports-color
-    dev: true
 
   /@sveltejs/vite-plugin-svelte-inspector@1.0.4(@sveltejs/vite-plugin-svelte@2.4.5)(svelte@4.0.5)(vite@4.4.2):
     resolution: {integrity: sha512-zjiuZ3yydBtwpF3bj0kQNV0YXe+iKE545QGZVTaylW3eAzFr+pJ/cwK8lZEaRp4JtaJXhD5DyWAV4AxLh6DgaQ==}
@@ -972,7 +946,6 @@ packages:
       vite: 4.4.2
     transitivePeerDependencies:
       - supports-color
-    dev: true
 
   /@sveltejs/vite-plugin-svelte@2.4.5(svelte@4.0.5)(vite@4.4.2):
     resolution: {integrity: sha512-UJKsFNwhzCVuiZd06jM/psscyNJNDwjQC+qIeb7GBJK9iWeQCcIyfcPWDvbCudfcJggY9jtxJeeaZH7uny93FQ==}
@@ -992,7 +965,19 @@ packages:
       vitefu: 0.2.4(vite@4.4.2)
     transitivePeerDependencies:
       - supports-color
-    dev: true
+
+  /@tabler/icons-svelte@2.34.0(svelte@4.0.5):
+    resolution: {integrity: sha512-/qLJWUo8jcn6wzYrcqtlwfjpvRDbBoDP53qQPU6ig/SzaaB5aFe7dJEl4YJ1m/c+UNgTXVbbDbZw7NqJLh1cxw==}
+    peerDependencies:
+      svelte: '>=3 <5'
+    dependencies:
+      '@tabler/icons': 2.34.0
+      svelte: 4.0.5
+    dev: false
+
+  /@tabler/icons@2.34.0:
+    resolution: {integrity: sha512-65GsJsT4ZBETWcdrNxbsjsbRoZvbVk3CcU2SafaElrzP1wpOeuAn9aELVEbxhdyZyP9dg2SCfgH6iAArJgp7lw==}
+    dev: false
 
   /@types/cookie-signature@1.1.0:
     resolution: {integrity: sha512-6/OwJHoeGW5taC2vWq1sz8X7/T2rAPVXj3zQds+rM4b5VrW8lgpYjpDVjTJmkRB1IODBCAiuPXNk092CjYlryQ==}
@@ -1684,7 +1669,6 @@ packages:
     engines: {node: '>=10.16.0'}
     dependencies:
       streamsearch: 1.1.0
-    dev: true
 
   /call-bind@1.0.2:
     resolution: {integrity: sha512-7O+FbCihrB5WGbFYesctwmTKae6rOiIzmz1icreWJ+0aA7LJfuqhEso2T9ncpcFtzMQtzXf2QGGueWJGTYsqrA==}
@@ -1888,7 +1872,6 @@ packages:
         optional: true
     dependencies:
       ms: 2.1.2
-    dev: true
 
   /deep-equal@2.2.1:
     resolution: {integrity: sha512-lKdkdV6EOGoVn65XaOsPdH4rMxTZOnmFyuIkMjM1i5HHCbfjC97dawgTAy0deYNfuqUqW+Q5VrVaQYtUpSd6yQ==}
@@ -1920,7 +1903,6 @@ packages:
   /deepmerge@4.3.1:
     resolution: {integrity: sha512-3sUqbMEc77XqpdNO7FRyRog+eW3ph+GYCbj+rK+uYyRMuwsVy0rMiVtPn+QJlKFvWP/1PYpapqYn0Me2knFn+A==}
     engines: {node: '>=0.10.0'}
-    dev: true
 
   /default-browser-id@3.0.0:
     resolution: {integrity: sha512-OZ1y3y0SqSICtE8DE4S8YOE9UZOJ8wO16fKWVP5J1Qz42kV9jcnMVFrEE/noXb/ss3Q4pZIH79kxofzyNNtUNA==}
@@ -1974,7 +1956,6 @@ packages:
 
   /devalue@4.3.2:
     resolution: {integrity: sha512-KqFl6pOgOW+Y6wJgu80rHpo2/3H07vr8ntR9rkkFIRETewbf5GaYYcakYfiKz89K+sLsuPkQIZaXDMjUObZwWg==}
-    dev: true
 
   /didyoumean@1.2.2:
     resolution: {integrity: sha512-gxtyfqMg7GKyhQmb056K7M3xszy/myH8w+B4RT+QXBQsvAOdc3XymqDDPHx1BgPgsdAA5SIifona89YtRATDzw==}
@@ -2116,8 +2097,8 @@ packages:
     resolution: {integrity: sha512-4LODxAzKGVy7CJyhhN5mebwe7U2L29P+0G+HUriHnabm0d7LSff8Yn7t+Wq+2/9ze2Fu1dhX7mww090xfv7qXQ==}
     dev: true
 
-  /elysia@0.6.19(@sinclair/typebox@0.31.14):
-    resolution: {integrity: sha512-Kur/p0OG2D+dh6BEQ+KEjIW4cCnIv7ijBDFEVRvyFLYlKJgVMvA+koiGV715lFvE+EGPFbSEDdMzHfBihxza4A==}
+  /elysia@0.6.20(@sinclair/typebox@0.31.14):
+    resolution: {integrity: sha512-15HX3DlTkPo1FKwZLRqxJ4F+KlSyrOj9/8C0R7DHSd8zRJ9e6kx8p8eEftG2mooKo7ItWbIq/PJNF5VuoDSC9A==}
     peerDependencies:
       '@elysiajs/fn': '*'
       '@sinclair/typebox': '>= 0.28.10'
@@ -2375,7 +2356,6 @@ packages:
       '@esbuild/win32-arm64': 0.18.20
       '@esbuild/win32-ia32': 0.18.20
       '@esbuild/win32-x64': 0.18.20
-    dev: true
 
   /escalade@3.1.1:
     resolution: {integrity: sha512-k0er2gUkLf8O0zKJiAhmkTnJlTvINGv7ygDNPbeIsX/TJjGJZHuh9B2UxbsaEkmlEo9MfhrSzmhIlhRlI2GXnw==}
@@ -2793,7 +2773,6 @@ packages:
 
   /esm-env@1.0.0:
     resolution: {integrity: sha512-Cf6VksWPsTuW01vU9Mk/3vRue91Zevka5SjyNf3nEpokFRuqt/KjUQoGAwq9qMmhpLTHmXzSIrFRw8zxWzmFBA==}
-    dev: true
 
   /espree@9.6.1:
     resolution: {integrity: sha512-oruZaFkjorTpF32kDSI5/75ViwGeZginGGy2NoOSg3Q9bnwlnmDm4HLnkl0RE3n+njDXR037aY1+x58Z/zFdwQ==}
@@ -2981,6 +2960,18 @@ packages:
     dependencies:
       is-callable: 1.2.7
     dev: true
+
+  /formsnap@0.0.9(svelte@4.0.5)(sveltekit-superforms@1.6.1)(zod@3.22.2):
+    resolution: {integrity: sha512-PJ/UU0+nfdyywc73sN016tF0+aPVhy37M43MY9jbtjrDuhFcibQ4EoCG3b8NtyBMSTWf785SuzAo8jdADiQVcg==}
+    peerDependencies:
+      svelte: ^4.0.0
+      sveltekit-superforms: ^1.6.1
+      zod: ^3.22.2
+    dependencies:
+      svelte: 4.0.5
+      sveltekit-superforms: 1.6.1(@sveltejs/kit@1.20.4)(svelte@4.0.5)(zod@3.22.2)
+      zod: 3.22.2
+    dev: false
 
   /fraction.js@4.3.6:
     resolution: {integrity: sha512-n2aZ9tNfYDwaHhvFTkhFErqOMIb8uyzSQ+vGJBjZyanAKZVbGUQ1sngfk9FdkBw7G26O7AgNjLcecLffD1c7eg==}
@@ -3605,7 +3596,6 @@ packages:
   /kleur@4.1.5:
     resolution: {integrity: sha512-o+NO+8WrRiQEE4/7nwRJhN1HWpVmJm511pBHUxPLtp0BUISzlBplORYSmTclCnJvQq2tKu/sgl3xVpkc7ZWuQQ==}
     engines: {node: '>=6'}
-    dev: true
 
   /known-css-properties@0.27.0:
     resolution: {integrity: sha512-uMCj6+hZYDoffuvAJjFAPz56E9uoowFHmTkqRtRq5WyC5Q6Cu/fTZKNQpX/RbzChBYLLl3lo8CjFZBAZXq9qFg==}
@@ -3694,12 +3684,8 @@ packages:
       es5-ext: 0.10.62
     dev: true
 
-  /lucia-auth@1.8.0:
-    resolution: {integrity: sha512-zI8gT2AOpxTPIxYzToEdgoht+GOflrduZiHPsOEmg4/2pThOyCW3o3lXh+Uwh20tJ9QoXwQe9/Omn6PlUG6efw==}
-    dev: false
-
-  /lucia@2.4.0:
-    resolution: {integrity: sha512-v2pyFQVF734+EU3m9GeeJQorFR7zLt7JoOJ1UD5ttR5Z+w4IkOyExiXyFe+zssKpony66u94wcxyws3lZSpzzg==}
+  /lucia@2.5.0:
+    resolution: {integrity: sha512-eUUtf4gBsT1vLF1UEkZly3Sh620N4P0TcGzeDMviFqF0qULB7XOgC9GMmobK3y9L/cEfoD8YHNxfIN/AzSXQsg==}
     dev: false
 
   /magic-string@0.27.0:
@@ -3754,7 +3740,6 @@ packages:
     resolution: {integrity: sha512-jSCU7/VB1loIWBZe14aEYHU/+1UMEHoaO7qxCOVJOw9GgH72VAWppxNcjU+x9a2k3GSIBXNKxXQFqRvvZ7vr3A==}
     engines: {node: '>=10.0.0'}
     hasBin: true
-    dev: true
 
   /mimic-fn@2.1.0:
     resolution: {integrity: sha512-OqbOk5oEQeAZ8WXWydlu9HJjz9WVdEIvamMCcXmuqUYjTknH/sqsWvhQ3vgwKFRR1HpjvNBKQ37nbJgYzGqGcg==}
@@ -3804,16 +3789,13 @@ packages:
   /mri@1.2.0:
     resolution: {integrity: sha512-tzzskb3bG8LvYGFF/mDTpq3jpI6Q9wc3LEmBaghu+DdCssd1FakN7Bc0hVNmEyGq1bq3RgfkCb3cmQLpNPOroA==}
     engines: {node: '>=4'}
-    dev: true
 
   /mrmime@1.0.1:
     resolution: {integrity: sha512-hzzEagAgDyoU1Q6yg5uI+AorQgdvMCur3FcKf7NhMKWsaYg+RnbTyHRa/9IlLF9rf455MOCtcqqrQQ83pPP7Uw==}
     engines: {node: '>=10'}
-    dev: true
 
   /ms@2.1.2:
     resolution: {integrity: sha512-sGkPx+VjMtmA6MX27oA4FBFELFCZZ4S4XqeGOXCv68tT+jb3vk/RyaKWP0PTKyWtmLSM0b+adUTEvbs1PEaH2w==}
-    dev: true
 
   /ms@2.1.3:
     resolution: {integrity: sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==}
@@ -4448,7 +4430,6 @@ packages:
     hasBin: true
     optionalDependencies:
       fsevents: 2.3.3
-    dev: true
 
   /run-applescript@5.0.0:
     resolution: {integrity: sha512-XcT5rBksx1QdIhlFOCtgZkB99ZEouFZ1E2Kc2LHqNW13U3/74YGdkQRmThTwxy4QIyookibDKYZOPqX//6BlAg==}
@@ -4467,7 +4448,6 @@ packages:
     engines: {node: '>=6'}
     dependencies:
       mri: 1.2.0
-    dev: true
 
   /safe-array-concat@1.0.0:
     resolution: {integrity: sha512-9dVEFruWIsnie89yym+xWTAYASdpw3CJV7Li/6zBewGf9z2i1j31rP6jnY0pHEO4QZh6N0K11bFjWmdR8UGdPQ==}
@@ -4521,7 +4501,6 @@ packages:
 
   /set-cookie-parser@2.6.0:
     resolution: {integrity: sha512-RVnVQxTXuerk653XfuliOxBP81Sf0+qfQE73LIYKcyMYHG94AuH0kgrQpRDuTZnSmjpysHmzxJXKNfa6PjFhyQ==}
-    dev: true
 
   /shebang-command@2.0.0:
     resolution: {integrity: sha512-kHxr2zZpYtdmrN1qDjrrX/Z1rR1kG8Dx+gkpK1G4eXmvXswmcE1hTWBWYUzlraYw1/yZp6YuDY77YtvbN0dmDA==}
@@ -4554,7 +4533,6 @@ packages:
       '@polka/url': 1.0.0-next.23
       mrmime: 1.0.1
       totalist: 3.0.1
-    dev: true
 
   /sisteransi@1.0.5:
     resolution: {integrity: sha512-bLGGlR1QxBcynn2d5YmDX4MGjlZvy2MRBDRNHLJ8VI6l6+9FUiyTFNJ0IveOSP0bcXgVDPRcfGqA0pjaqUpfVg==}
@@ -4644,7 +4622,6 @@ packages:
   /streamsearch@1.1.0:
     resolution: {integrity: sha512-Mcc5wHehp9aXz1ax6bZUyY5afg9u2rv5cqQI3mRrYkGC8rW2hM02jWuwjtL++LS5qinSyhj2QfLyNsuc+VsExg==}
     engines: {node: '>=10.0.0'}
-    dev: true
 
   /string.prototype.matchall@4.0.8:
     resolution: {integrity: sha512-6zOCOcJ+RJAQshcTvXPHoxoQGONa3e/Lqx90wUA+wEzX78sg5Bo+1tQo4N0pohS0erG9qtCqJDjNCQBjeWVxyg==}
@@ -4798,7 +4775,6 @@ packages:
       svelte: ^3.19.0 || ^4.0.0
     dependencies:
       svelte: 4.0.5
-    dev: true
 
   /svelte-preprocess@5.0.4(postcss-load-config@4.0.1)(postcss@8.4.29)(svelte@4.0.5)(typescript@5.2.2):
     resolution: {integrity: sha512-ABia2QegosxOGsVlsSBJvoWeXy1wUKSfF7SWJdTjLAbx/Y3SrVevvvbFNQqrSJw89+lNSsM58SipmZJ5SRi5iw==}
@@ -4866,6 +4842,18 @@ packages:
       locate-character: 3.0.0
       magic-string: 0.30.3
       periscopic: 3.1.0
+
+  /sveltekit-superforms@1.6.1(@sveltejs/kit@1.20.4)(svelte@4.0.5)(zod@3.22.2):
+    resolution: {integrity: sha512-85whZdnytMFStDY1PI3ycr5BoTb57XjkEJqZ2Mt8HT06y/CKlQBws5Cx/AxPxA3WHhGfC26yfXqLYqEQz1oGfw==}
+    peerDependencies:
+      '@sveltejs/kit': 1.x
+      svelte: 3.x || 4.x
+      zod: 3.x
+    dependencies:
+      '@sveltejs/kit': 1.20.4(svelte@4.0.5)(vite@4.4.2)
+      svelte: 4.0.5
+      zod: 3.22.2
+    dev: false
 
   /synckit@0.8.5:
     resolution: {integrity: sha512-L1dapNV6vu2s/4Sputv8xGsCdAVlb5nRDMFU/E27D44l5U6cw1g0dGd45uLc+OXjNMmF4ntiMdCimzcjFKQI8Q==}
@@ -4969,7 +4957,6 @@ packages:
   /totalist@3.0.1:
     resolution: {integrity: sha512-sf4i37nQ2LBx4m3wB74y+ubopq6W/dIzXg0FDGjsYnZHVa1Da8FH853wlL2gtUhg+xJXjfk3kUZS3BRoQeoQBQ==}
     engines: {node: '>=6'}
-    dev: true
 
   /ts-api-utils@1.0.2(typescript@5.2.2):
     resolution: {integrity: sha512-Cbu4nIqnEdd+THNEsBdkolnOXhg0I8XteoHaEKgvsxpsbWda4IsUut2c187HxywQCvveojow0Dgw/amxtSKVkQ==}
@@ -5169,16 +5156,11 @@ packages:
       which-boxed-primitive: 1.0.2
     dev: true
 
-  /uncrypto@0.1.3:
-    resolution: {integrity: sha512-Ql87qFHB3s/De2ClA9e0gsnS6zXG27SkTiSJwjCc9MebbfapQfuPzumMIUMi38ezPZVNFcHI9sUIepeQfw8J8Q==}
-    dev: false
-
   /undici@5.22.1:
     resolution: {integrity: sha512-Ji2IJhFXZY0x/0tVBXeQwgPlLWw13GVzpsWPQ3rV50IFMMof2I55PZZxtm4P6iNq+L5znYN9nSTAq0ZyE6lSJw==}
     engines: {node: '>=14.0'}
     dependencies:
       busboy: 1.6.0
-    dev: true
 
   /untildify@4.0.0:
     resolution: {integrity: sha512-KK8xQ1mkzZeg9inewmFVDNkg3l5LUhoq9kN6iWYB/CC9YMG8HA+c1Q8HwDe6dEX7kErrEVNVBO3fWsVq5iDgtw==}
@@ -5245,7 +5227,6 @@ packages:
       rollup: 3.29.0
     optionalDependencies:
       fsevents: 2.3.3
-    dev: true
 
   /vitefu@0.2.4(vite@4.4.2):
     resolution: {integrity: sha512-fanAXjSaf9xXtOOeno8wZXIhgia+CZury481LsDaV++lSvcU2R9Ch2bPh3PYFyoHW+w9LqAeYRISVQjUIew14g==}
@@ -5256,7 +5237,6 @@ packages:
         optional: true
     dependencies:
       vite: 4.4.2
-    dev: true
 
   /which-boxed-primitive@1.0.2:
     resolution: {integrity: sha512-bwZdv0AKLpplFY2KZRX6TvyuN7ojjr7lwkg6ml0roIy9YeuSr7JS372qlNW18UQYzgYK9ziGcerWqZOmEn9VNg==}
@@ -5355,4 +5335,3 @@ packages:
 
   /zod@3.22.2:
     resolution: {integrity: sha512-wvWkphh5WQsJbVk1tbx1l1Ly4yg+XecD+Mq280uBGt9wa5BKSWf4Mhp6GmrkPixhMxmabYY7RbzlwVP32pbGCg==}
-    dev: true
