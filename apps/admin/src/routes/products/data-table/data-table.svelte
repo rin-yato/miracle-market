@@ -7,35 +7,17 @@
   } from 'svelte-headless-table';
   import { readable } from 'svelte/store';
   import * as Table from '$lib/components/ui/table';
+  import * as HoverCard from '$lib/components/ui/hover-card';
   import Action from './action.svelte';
-  import Image from '$lib/components/image.svelte';
-  import CellContainer from '$lib/components/ui/table/cell-container.svelte';
-  import {
-    addSortBy,
-    addTableFilter
-  } from 'svelte-headless-table/plugins';
-  import { Button } from '$lib/components/ui/button';
-  import { IconArrowsUpDown } from '@tabler/icons-svelte';
+  import { addTableFilter } from 'svelte-headless-table/plugins';
   import { Input } from '$lib/components/ui/input';
-
-  type Product = {
-    id: number;
-    title: string;
-    description: string;
-    price: number;
-    discountPercentage: number;
-    rating: number;
-    stock: number;
-    brand: string;
-    category: string;
-    thumbnail: string;
-    images: string[];
-  };
+  import { getColumnValue, type Product } from '.';
+  import { IconSearch } from '@tabler/icons-svelte';
+  import { page } from '$app/stores';
 
   export let data: Product[];
 
   const table = createTable(readable(data), {
-    sort: addSortBy(),
     filter: addTableFilter({
       fn: ({ filterValue, value }) =>
         value.toLowerCase().includes(filterValue.toLowerCase())
@@ -44,39 +26,13 @@
 
   const columns = table.createColumns([
     table.column({
-      accessor: 'id',
-      header: 'ID',
-      cell: (id) => {
-        return createRender(CellContainer, {
-          class: 'pl-2',
-          text: id.value
-        });
-      },
-      plugins: {
-        sort: {
-          disable: true
-        }
-      }
-    }),
-    table.column({
       accessor: 'thumbnail',
       header: '',
-      cell: (item) => {
-        return createRender(Image, {
-          src: item.value,
-          alt: item.value,
-          class: 'w-14 h-14 object-cover rounded'
-        });
-      },
-      plugins: {
-        sort: {
-          disable: true
-        }
-      }
+      cell: () => ''
     }),
     table.column({
       accessor: 'title',
-      header: 'Title'
+      header: 'Name'
     }),
     table.column({
       accessor: 'category',
@@ -88,11 +44,22 @@
     }),
     table.column({
       accessor: 'price',
-      header: 'Price'
+      header: 'Price',
+      cell: (price) => {
+        const formatter = new Intl.NumberFormat('en-US', {
+          style: 'currency',
+          currency: 'USD'
+        });
+
+        return formatter.format(price.value);
+      }
     }),
     table.column({
       accessor: 'stock',
-      header: 'Stock'
+      header: 'Stock',
+      cell: (stock) => {
+        return `${stock.value} in stock`;
+      }
     }),
     table.column({
       accessor: ({ id }) => id,
@@ -112,12 +79,15 @@
   } = table.createViewModel(columns);
 
   const { filterValue } = pluginStates.filter;
+
+  $: $page.url.searchParams.set('search', $filterValue);
 </script>
 
-<div class="flex items-center py-4">
+<div class="flex items-center my-4 relative">
+  <IconSearch class="absolute left-2.5 text-muted-foreground" size={16} />
   <Input
-    class="max-w-sm"
-    placeholder="Filter emails..."
+    class="max-w-xs pl-9"
+    placeholder="Search products..."
     type="text"
     bind:value={$filterValue}
   />
@@ -136,10 +106,7 @@
                 let:props
               >
                 <Table.Head {...attrs}>
-                  <Button variant="ghost" on:click={props.sort.toggle}>
-                    <Render of={cell.render()} />
-                    <IconArrowsUpDown class={'ml-2 h-4 w-4'} />
-                  </Button>
+                  <Render of={cell.render()} />
                 </Table.Head>
               </Subscribe>
             {/each}
@@ -154,7 +121,36 @@
             {#each row.cells as cell (cell.id)}
               <Subscribe attrs={cell.attrs()} let:attrs>
                 <Table.Cell {...attrs}>
-                  <Render of={cell.render()} />
+                  {#if cell.id === 'title'}
+                    <div class="flex gap-3 items-center">
+                      <HoverCard.Root openDelay={175} closeDelay={200}>
+                        <HoverCard.Trigger>
+                          <img
+                            src={getColumnValue(row, 'thumbnail')}
+                            alt="product"
+                            class="w-10 h-12 bg-gray-200 object-cover rounded"
+                          />
+                        </HoverCard.Trigger>
+                        <HoverCard.Content class="p-0">
+                          <img
+                            src={getColumnValue(row, 'thumbnail')}
+                            alt="product"
+                            class="w-full h-full bg-gray-200 object-cover rounded"
+                          />
+                        </HoverCard.Content>
+                      </HoverCard.Root>
+
+                      <p class="w-[20ch] truncate">
+                        <Render of={cell.render()} />
+                      </p>
+                    </div>
+                  {:else if cell.id === 'brand'}
+                    <p class="w-[15ch] truncate">
+                      <Render of={cell.render()} />
+                    </p>
+                  {:else}
+                    <Render of={cell.render()} />
+                  {/if}
                 </Table.Cell>
               </Subscribe>
             {/each}
