@@ -4,9 +4,9 @@
   import '../app.postcss';
 </script>
 
-<div class="flex min-h-screen">
+<div class="flex min-h-screen w-screen overflow-x-hidden">
   <Sidebar />
-  <div class="flex-1">
+  <div class="flex-1 flex flex-col">
     <Header />
     <slot />
   </div>
