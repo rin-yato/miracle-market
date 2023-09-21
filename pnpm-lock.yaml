@@ -23,6 +23,9 @@ importers:
 
   apps/admin:
     dependencies:
+      '@melt-ui/svelte':
+        specifier: ^0.49.1
+        version: 0.49.1(svelte@4.0.5)
       '@tabler/icons-svelte':
         specifier: ^2.34.0
         version: 2.34.0(svelte@4.0.5)
@@ -82,11 +85,14 @@ importers:
         specifier: ^4.0.1
         version: 4.0.1(postcss@8.4.29)
       prettier:
-        specifier: ^2.8.0
-        version: 2.8.0
+        specifier: ^3.0.3
+        version: 3.0.3
       prettier-plugin-svelte:
-        specifier: ^2.10.1
-        version: 2.10.1(prettier@2.8.0)(svelte@4.0.5)
+        specifier: ^3.0.3
+        version: 3.0.3(prettier@3.0.3)(svelte@4.0.5)
+      prettier-plugin-tailwindcss:
+        specifier: ^0.5.4
+        version: 0.5.4(prettier-plugin-svelte@3.0.3)(prettier@3.0.3)
       svelte:
         specifier: ^4.0.5
         version: 4.0.5
@@ -140,7 +146,7 @@ importers:
         version: 16.3.1
       drizzle-orm:
         specifier: ^0.28.6
-        version: 0.28.6(@types/pg@8.10.2)(bun-types@1.0.1)
+        version: 0.28.6(@types/pg@8.10.2)(bun-types@1.0.2)
       elysia:
         specifier: latest
         version: 0.6.23(@sinclair/typebox@0.31.14)
@@ -153,7 +159,7 @@ importers:
     devDependencies:
       bun-types:
         specifier: latest
-        version: 1.0.1
+        version: 1.0.2
       drizzle-kit:
         specifier: ^0.19.13
         version: 0.19.13
@@ -764,6 +770,19 @@ packages:
 
   /@melt-ui/svelte@0.41.3(svelte@4.0.5):
     resolution: {integrity: sha512-zNd7Bogh9Bm0CdrjU0hAak26SVV5VSxJoaJEtJnV1ZR3KxVPDekVoG1hnin7AG0VYWPm1gKXA1uXTOi5M8XJYw==}
+    peerDependencies:
+      svelte: '>=3 <5'
+    dependencies:
+      '@floating-ui/core': 1.4.1
+      '@floating-ui/dom': 1.5.1
+      dequal: 2.0.3
+      focus-trap: 7.5.2
+      nanoid: 4.0.2
+      svelte: 4.0.5
+    dev: false
+
+  /@melt-ui/svelte@0.49.1(svelte@4.0.5):
+    resolution: {integrity: sha512-zSP/YvAtCGDdMWamBfAhsY3p7a361DQRxkI34swLyZk4QwzJDX5R5mAE5JyiyPdOlBkBuhWF/X3kWpaFamQLTg==}
     peerDependencies:
       svelte: '>=3 <5'
     dependencies:
@@ -1641,8 +1660,8 @@ packages:
     engines: {node: '>=6'}
     dev: true
 
-  /bun-types@1.0.1:
-    resolution: {integrity: sha512-7NrXqhMIaNKmWn2dSWEQ50znMZqrN/5Z0NBMXvQTRu/+Y1CvoXRznFy0pnqLe024CeZgVdXoEpARNO1JZLAPGw==}
+  /bun-types@1.0.2:
+    resolution: {integrity: sha512-yqBp2SX9cqr5/GReb56uCfM+YP+Hntx3XPjbqX1VJXqOBu+Yqw8iWRFLKFIsz9uEfykLgflhramQ8a5Jgo+Tlg==}
 
   /bundle-name@3.0.0:
     resolution: {integrity: sha512-PKA4BeSvBpQKQ8iPOGCSiell+N8P+Tf1DlwqmYhpe2gAhKPHn8EYOxVT+ShuGmhg8lN8XiSlS80yiExKXrURlw==}
@@ -2014,7 +2033,7 @@ packages:
       - supports-color
     dev: true
 
-  /drizzle-orm@0.28.6(@types/pg@8.10.2)(bun-types@1.0.1):
+  /drizzle-orm@0.28.6(@types/pg@8.10.2)(bun-types@1.0.2):
     resolution: {integrity: sha512-yBe+F9htrlYER7uXgDJUQsTHFoIrI5yMm5A0bg0GiZ/kY5jNXTWoEy4KQtg35cE27sw1VbgzoMWHAgCckUUUww==}
     peerDependencies:
       '@aws-sdk/client-rds-data': '>=3'
@@ -2077,7 +2096,7 @@ packages:
         optional: true
     dependencies:
       '@types/pg': 8.10.2
-      bun-types: 1.0.1
+      bun-types: 1.0.2
     dev: false
 
   /electron-to-chromium@1.4.498:
@@ -4247,20 +4266,70 @@ packages:
       synckit: 0.8.5
     dev: true
 
-  /prettier-plugin-svelte@2.10.1(prettier@2.8.0)(svelte@4.0.5):
-    resolution: {integrity: sha512-Wlq7Z5v2ueCubWo0TZzKc9XHcm7TDxqcuzRuGd0gcENfzfT4JZ9yDlCbEgxWgiPmLHkBjfOtpAWkcT28MCDpUQ==}
+  /prettier-plugin-svelte@3.0.3(prettier@3.0.3)(svelte@4.0.5):
+    resolution: {integrity: sha512-dLhieh4obJEK1hnZ6koxF+tMUrZbV5YGvRpf2+OADyanjya5j0z1Llo8iGwiHmFWZVG/hLEw/AJD5chXd9r3XA==}
     peerDependencies:
-      prettier: ^1.16.4 || ^2.0.0
+      prettier: ^3.0.0
       svelte: ^3.2.0 || ^4.0.0-next.0
     dependencies:
-      prettier: 2.8.0
+      prettier: 3.0.3
       svelte: 4.0.5
     dev: true
 
-  /prettier@2.8.0:
-    resolution: {integrity: sha512-9Lmg8hTFZKG0Asr/kW9Bp8tJjRVluO8EJQVfY2T7FMw9T5jy4I/Uvx0Rca/XWf50QQ1/SS48+6IJWnrb+2yemA==}
-    engines: {node: '>=10.13.0'}
-    hasBin: true
+  /prettier-plugin-tailwindcss@0.5.4(prettier-plugin-svelte@3.0.3)(prettier@3.0.3):
+    resolution: {integrity: sha512-QZzzB1bID6qPsKHTeA9qPo1APmmxfFrA5DD3LQ+vbTmAnY40eJI7t9Q1ocqel2EKMWNPLJqdTDWZj1hKYgqSgg==}
+    engines: {node: '>=14.21.3'}
+    peerDependencies:
+      '@ianvs/prettier-plugin-sort-imports': '*'
+      '@prettier/plugin-pug': '*'
+      '@shopify/prettier-plugin-liquid': '*'
+      '@shufo/prettier-plugin-blade': '*'
+      '@trivago/prettier-plugin-sort-imports': '*'
+      prettier: ^3.0
+      prettier-plugin-astro: '*'
+      prettier-plugin-css-order: '*'
+      prettier-plugin-import-sort: '*'
+      prettier-plugin-jsdoc: '*'
+      prettier-plugin-marko: '*'
+      prettier-plugin-organize-attributes: '*'
+      prettier-plugin-organize-imports: '*'
+      prettier-plugin-style-order: '*'
+      prettier-plugin-svelte: '*'
+      prettier-plugin-twig-melody: '*'
+    peerDependenciesMeta:
+      '@ianvs/prettier-plugin-sort-imports':
+        optional: true
+      '@prettier/plugin-pug':
+        optional: true
+      '@shopify/prettier-plugin-liquid':
+        optional: true
+      '@shufo/prettier-plugin-blade':
+        optional: true
+      '@trivago/prettier-plugin-sort-imports':
+        optional: true
+      prettier-plugin-astro:
+        optional: true
+      prettier-plugin-css-order:
+        optional: true
+      prettier-plugin-import-sort:
+        optional: true
+      prettier-plugin-jsdoc:
+        optional: true
+      prettier-plugin-marko:
+        optional: true
+      prettier-plugin-organize-attributes:
+        optional: true
+      prettier-plugin-organize-imports:
+        optional: true
+      prettier-plugin-style-order:
+        optional: true
+      prettier-plugin-svelte:
+        optional: true
+      prettier-plugin-twig-melody:
+        optional: true
+    dependencies:
+      prettier: 3.0.3
+      prettier-plugin-svelte: 3.0.3(prettier@3.0.3)(svelte@4.0.5)
     dev: true
 
   /prettier@3.0.3:

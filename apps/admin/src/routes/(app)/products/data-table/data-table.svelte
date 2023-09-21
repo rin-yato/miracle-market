@@ -5,7 +5,6 @@
     Render,
     Subscribe
   } from 'svelte-headless-table';
-  import { readable } from 'svelte/store';
   import * as Table from '$lib/components/ui/table';
   import * as HoverCard from '$lib/components/ui/hover-card';
   import Action from './action.svelte';
@@ -13,11 +12,21 @@
   import { Input } from '$lib/components/ui/input';
   import { getColumnValue, type Product } from '.';
   import { IconSearch } from '@tabler/icons-svelte';
-  import { page } from '$app/stores';
+  import Pagination from '$lib/components/ui/table/pagination.svelte';
+  import { readable, writable } from 'svelte/store';
 
-  export let data: Product[];
+  export let data: {
+    products: Product[];
+    total: number;
+    skip: number;
+    limit: number;
+  };
 
-  const table = createTable(readable(data), {
+  const products = writable<Product[]>(data.products);
+
+  $: products.set(data.products);
+
+  const table = createTable(products, {
     filter: addTableFilter({
       fn: ({ filterValue, value }) =>
         value.toLowerCase().includes(filterValue.toLowerCase())
@@ -79,8 +88,6 @@
   } = table.createViewModel(columns);
 
   const { filterValue } = pluginStates.filter;
-
-  $: $page.url.searchParams.set('search', $filterValue);
 </script>
 
 <div class="flex items-center my-4 relative">
@@ -123,7 +130,13 @@
                 <Table.Cell {...attrs}>
                   {#if cell.id === 'title'}
                     <div class="flex gap-3 items-center">
-                      <HoverCard.Root openDelay={175} closeDelay={200}>
+                      <HoverCard.Root
+                        openDelay={175}
+                        closeDelay={200}
+                        positioning={{
+                          placement: 'left'
+                        }}
+                      >
                         <HoverCard.Trigger>
                           <img
                             src={getColumnValue(row, 'thumbnail')}
@@ -159,4 +172,7 @@
       {/each}
     </Table.Body>
   </Table.Root>
+</div>
+<div class="py-5 flex justify-end">
+  <Pagination totalItems={data.total} perPage={data.limit} />
 </div>
