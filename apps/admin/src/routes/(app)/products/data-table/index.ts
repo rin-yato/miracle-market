@@ -1,7 +1,7 @@
 import Action from './action.svelte';
 import Checkbox from './checkbox.svelte';
 import DataTable from './data-table.svelte';
-import { BodyRow, DataBodyCell } from 'svelte-headless-table';
+import type { BodyRow, DataBodyCell } from 'svelte-headless-table';
 
 export { Action, Checkbox, DataTable };
 
