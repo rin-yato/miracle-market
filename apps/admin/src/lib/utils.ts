@@ -39,12 +39,11 @@ export const flyAndScale = (
 
   const styleToString = (
     style: Record<string, number | string | undefined>,
-  ): string => {
-    return Object.keys(style).reduce((str, key) => {
+  ): string =>
+    Object.keys(style).reduce((str, key) => {
       if (style[key] === undefined) return str;
       return str + `${key}:${style[key]};`;
     }, '');
-  };
 
   return {
     duration: params.duration ?? 200,
@@ -71,15 +70,13 @@ export type FormSubmitEvent<
   cancel: () => void;
 };
 
-export const handleFormSubmit = <
-  T extends SuperValidated<ZodValidation<z.AnyZodObject>>,
->(
-  form: T,
-  callback: (event: FormSubmitEvent<T>) => void,
-) => {
-  return (event: FormSubmitEvent<T>) => {
+export const handleFormSubmit =
+  <T extends SuperValidated<ZodValidation<z.AnyZodObject>>>(
+    form: T,
+    callback: (event: FormSubmitEvent<T>) => void,
+  ) =>
+  (event: FormSubmitEvent<T>) => {
     if (event.form.valid) {
       callback(event);
     }
   };
-};

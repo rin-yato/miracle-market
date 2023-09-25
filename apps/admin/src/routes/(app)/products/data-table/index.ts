@@ -9,7 +9,7 @@ export const sortableColumns: Array<keyof Product> = [
   'price',
   'discountPercentage',
   'rating',
-  'stock'
+  'stock',
 ];
 
 export function isSortableColumn(column: string): column is keyof Product {
@@ -18,7 +18,7 @@ export function isSortableColumn(column: string): column is keyof Product {
 
 export function getColumnValue(
   row: BodyRow<Product>,
-  column: keyof Product
+  column: keyof Product,
 ) {
   const cell = row.cellForId[column] as DataBodyCell<Product>;
 

@@ -3,7 +3,7 @@
     createRender,
     createTable,
     Render,
-    Subscribe
+    Subscribe,
   } from 'svelte-headless-table';
   import * as Table from '$lib/components/ui/table';
   import * as HoverCard from '$lib/components/ui/hover-card';
@@ -29,27 +29,27 @@
   const table = createTable(products, {
     filter: addTableFilter({
       fn: ({ filterValue, value }) =>
-        value.toLowerCase().includes(filterValue.toLowerCase())
-    })
+        value.toLowerCase().includes(filterValue.toLowerCase()),
+    }),
   });
 
   const columns = table.createColumns([
     table.column({
       accessor: 'thumbnail',
       header: '',
-      cell: () => ''
+      cell: () => '',
     }),
     table.column({
       accessor: 'title',
-      header: 'Name'
+      header: 'Name',
     }),
     table.column({
       accessor: 'category',
-      header: 'Category'
+      header: 'Category',
     }),
     table.column({
       accessor: 'brand',
-      header: 'Brand'
+      header: 'Brand',
     }),
     table.column({
       accessor: 'price',
@@ -57,26 +57,22 @@
       cell: (price) => {
         const formatter = new Intl.NumberFormat('en-US', {
           style: 'currency',
-          currency: 'USD'
+          currency: 'USD',
         });
 
         return formatter.format(price.value);
-      }
+      },
     }),
     table.column({
       accessor: 'stock',
       header: 'Stock',
-      cell: (stock) => {
-        return `${stock.value} in stock`;
-      }
+      cell: (stock) => `${stock.value} in stock`,
     }),
     table.column({
       accessor: ({ id }) => id,
       header: '',
-      cell: (item) => {
-        return createRender(Action, { id: item.id });
-      }
-    })
+      cell: (item) => createRender(Action, { id: item.id }),
+    }),
   ]);
 
   const {
@@ -84,13 +80,13 @@
     pageRows,
     tableAttrs,
     tableBodyAttrs,
-    pluginStates
+    pluginStates,
   } = table.createViewModel(columns);
 
   const { filterValue } = pluginStates.filter;
 </script>
 
-<div class="flex items-center my-4 relative">
+<div class="relative my-4 flex items-center">
   <IconSearch class="absolute left-2.5 text-muted-foreground" size={16} />
   <Input
     class="max-w-xs pl-9"
@@ -129,26 +125,26 @@
               <Subscribe attrs={cell.attrs()} let:attrs>
                 <Table.Cell {...attrs}>
                   {#if cell.id === 'title'}
-                    <div class="flex gap-3 items-center">
+                    <div class="flex items-center gap-3">
                       <HoverCard.Root
                         openDelay={175}
                         closeDelay={200}
                         positioning={{
-                          placement: 'left'
+                          placement: 'left',
                         }}
                       >
                         <HoverCard.Trigger>
                           <img
                             src={getColumnValue(row, 'thumbnail')}
                             alt="product"
-                            class="w-10 h-12 bg-gray-200 object-cover rounded"
+                            class="h-12 w-10 rounded bg-gray-200 object-cover"
                           />
                         </HoverCard.Trigger>
                         <HoverCard.Content class="p-0">
                           <img
                             src={getColumnValue(row, 'thumbnail')}
                             alt="product"
-                            class="w-full h-full bg-gray-200 object-cover rounded"
+                            class="h-full w-full rounded bg-gray-200 object-cover"
                           />
                         </HoverCard.Content>
                       </HoverCard.Root>
@@ -173,6 +169,6 @@
     </Table.Body>
   </Table.Root>
 </div>
-<div class="py-5 flex justify-end">
+<div class="flex justify-end py-5">
   <Pagination totalItems={data.total} perPage={data.limit} />
 </div>

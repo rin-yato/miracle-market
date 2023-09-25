@@ -1,15 +1,12 @@
-import { Elysia } from 'elysia';
-import { cookie } from '@elysiajs/cookie';
+import { Elysia, t } from 'elysia';
 import { eq } from 'drizzle-orm';
 import { lucia } from '@/lib/lucia';
 import { db } from '@/lib/db/drizzle';
 import { user } from '@/lib/db/schema/users';
 import { authSchema } from './schema';
 
-export const AuthModule = new Elysia().group('/auth', app =>
+export const AuthModule = new Elysia().group('/auth', (app) =>
   app
-    .use(cookie())
-
     // Sign up
     .post(
       '/sign-up',
@@ -36,16 +33,21 @@ export const AuthModule = new Elysia().group('/auth', app =>
     // Sign in
     .post(
       '/sign-in',
-      async ({ set, setCookie, body: { username, password } }) => {
+      async ({ set, cookie: { session }, body }) => {
+        const { username, password } = body;
+
         try {
           const key = await lucia.useKey('username', username, password);
 
-          const session = await lucia.createSession({
+          const createdSession = await lucia.createSession({
             userId: key.userId,
             attributes: {},
           });
 
-          setCookie('session', session.sessionId);
+          session.set({
+            value: createdSession.sessionId,
+            path: '/',
+          });
 
           return `Sign in as ${username}`;
         } catch {
@@ -65,19 +67,31 @@ export const AuthModule = new Elysia().group('/auth', app =>
     )
 
     // Handle routes guard
-    .onBeforeHandle(ctx => {
-      lucia.sessionGuard(ctx as any);
-    })
+    .onBeforeHandle((ctx) => lucia.sessionGuard(ctx))
+
+    // Validate session
+    .post(
+      '/validate',
+      async ({ cookie: { session } }) => {
+        return lucia.validateSession(session.value);
+      },
+      {
+        detail: {
+          tags: ['Auth'],
+        },
+      },
+    )
 
     // Sign out
     .get(
       '/sign-out',
-      async ({ cookie: { session }, removeCookie }) => {
-        await lucia.invalidateSession(session);
+      async ({ cookie: { session } }) => {
+        await lucia.invalidateSession(session.value);
 
-        removeCookie('session');
+        // Clear session cookie
+        session.remove();
 
-        return session;
+        return session.value;
       },
       {
         detail: {
@@ -90,7 +104,7 @@ export const AuthModule = new Elysia().group('/auth', app =>
 
     // Get userId
     .derive(async ({ cookie: { session } }) => {
-      const currentSession = await lucia.getSession(session);
+      const currentSession = await lucia.getSession(session.value);
 
       return {
         userId: currentSession.user.userId,
@@ -101,13 +115,22 @@ export const AuthModule = new Elysia().group('/auth', app =>
     .get(
       '/profile',
       async ({ userId }) => {
-        return await db.select().from(user).where(eq(user.id, userId));
+        const userFound = (
+          await db.select().from(user).where(eq(user.id, userId))
+        )[0];
+        return userFound;
       },
       {
         detail: {
           description: 'Get user profile',
           tags: ['Auth'],
           security: [{ cookieAuth: [] }],
+        },
+        response: {
+          200: t.Object({
+            username: t.Union([t.String(), t.Null()]),
+            id: t.String(),
+          }),
         },
       },
     )
@@ -116,7 +139,7 @@ export const AuthModule = new Elysia().group('/auth', app =>
     .delete(
       '/user',
       async ({ userId, cookie: { session } }) => {
-        await lucia.deleteDeadUserSessions(session);
+        await lucia.deleteDeadUserSessions(session.value);
         await lucia.deleteUser(userId);
 
         return userId;

@@ -11,7 +11,8 @@ export async function load(loadEvent) {
   const products = await (await fetch(fetchUrl.toString())).json();
 
   console.log('products', products);
+
   return {
-    products
+    products,
   };
 }

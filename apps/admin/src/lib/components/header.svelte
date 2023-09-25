@@ -4,7 +4,7 @@
   import Badge from './ui/badge/badge.svelte';
 </script>
 
-<header class="bg-white flex justify-between items-center py-3 px-5">
+<header class="flex items-center justify-between bg-white px-5 py-3">
   <Button variant="ghost" class="group text-muted-foreground">
     <Badge variant="outline" class="px-1">
       <span class="text-xs duration-200 group-hover:text-foreground">

@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "ES2021",
-    "module": "ES2022",
+    "module": "ESNext",
     "moduleResolution": "node",
     "types": ["bun-types"],
     "esModuleInterop": true,
@@ -14,5 +14,7 @@
     "paths": {
       "@/*": ["src/*"]
     }
-  }
+  },
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "*.js", "*.ts"],
+  "exclude": ["node_modules"]
 }

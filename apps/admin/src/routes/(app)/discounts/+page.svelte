@@ -1,5 +1,1 @@
-
-
-<h1>
-    Discounts   
-</h1>
+<h1>Discounts</h1>

@@ -1,5 +1,1 @@
-
-
-<h1>
-    pricing
-</h1>
+<h1>pricing</h1>
