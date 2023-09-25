@@ -8,8 +8,8 @@
     "preview": "vite preview",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
-    "lint": "prettier --plugin-search-dir . --check . && eslint .",
-    "format": "prettier --plugin-search-dir . --write ."
+    "lint": "pnpm format && eslint --ext .js,.cjs,.ts,.svelte .",
+    "format": "prettier --write ."
   },
   "devDependencies": {
     "@sveltejs/adapter-auto": "^2.0.0",
@@ -19,7 +19,8 @@
     "autoprefixer": "^10.4.14",
     "eslint": "^8.28.0",
     "eslint-config-prettier": "^8.5.0",
-    "eslint-plugin-svelte": "^2.30.0",
+    "eslint-plugin-prettier": "^5.0.0",
+    "eslint-plugin-svelte": "^2.33.2",
     "postcss": "^8.4.24",
     "postcss-load-config": "^4.0.1",
     "prettier": "^3.0.3",
@@ -40,11 +41,11 @@
     "bits-ui": "^0.5.7",
     "clsx": "^2.0.0",
     "formsnap": "^0.0.9",
+    "libs": "workspace:*",
     "radix-icons-svelte": "^1.2.1",
     "sveltekit-superforms": "^1.6.1",
     "tailwind-merge": "^1.14.0",
     "tailwind-variants": "^0.1.14",
-    "zod": "^3.22.2",
-    "libs": "workspace:*"
+    "zod": "^3.22.2"
   }
 }

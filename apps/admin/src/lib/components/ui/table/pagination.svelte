@@ -7,7 +7,7 @@
   export let totalItems: number;
   export let perPage: number;
 
-  let className: string = '';
+  let className = '';
 
   export { className as class };
 
@@ -44,7 +44,6 @@
       size="icon"
       variant="outline"
       href={links.prev}
-      
       disabled={links.prev === null}
     >
       <IconChevronLeft size={18} class="text-muted-foreground" />

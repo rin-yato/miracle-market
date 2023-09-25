@@ -9,7 +9,7 @@ const app = new Elysia()
     cors({
       credentials: true,
       origin: 'http://localhost:5173',
-      allowedHeaders: ['Content-Type', 'Cookie']
+      allowedHeaders: ['Content-Type', 'Cookie'],
     }),
   )
   .use(
@@ -39,10 +39,7 @@ const app = new Elysia()
     }),
   )
   .use(AuthModule)
-  .get(
-    '/',
-    async () => await db.query.user.findMany(),
-  )
+  .get('/', async () => db.query.user.findMany())
   .listen(3005);
 
 console.log(

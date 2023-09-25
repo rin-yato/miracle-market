@@ -7,7 +7,7 @@
     IconDiscount2,
     IconSettings,
     IconShoppingBag,
-    IconCategory
+    IconCategory,
   } from '@tabler/icons-svelte';
   import { page } from '$app/stores';
 
@@ -24,27 +24,27 @@
     {
       name: 'Products',
       icon: IconShoppingBag,
-      href: '/products'
+      href: '/products',
     },
     {
       name: 'Categories',
       icon: IconCategory,
-      href: '/categories'
+      href: '/categories',
     },
     {
       name: 'Discounts',
       icon: IconDiscount2,
-      href: '/discounts'
+      href: '/discounts',
     },
     {
       name: 'Settings',
       icon: IconSettings,
-      href: '/settings'
-    }
+      href: '/settings',
+    },
   ];
 </script>
 
-<aside class={cn('py-5 px-5 min-w-[250px] border-r  bg-white', className)}>
+<aside class={cn('min-w-[250px] border-r bg-white px-5  py-5', className)}>
   <header class="space-y-4 px-2.5">
     <Avatar class="ring-1 ring-primary ring-offset-2">
       <AvatarImage
@@ -58,19 +58,19 @@
       <h1 class="font-semibold">Daily Kicks</h1>
     </div>
   </header>
-  <div class="flex flex-col gap-1.5 mt-10">
+  <div class="mt-10 flex flex-col gap-1.5">
     {#each modules as module}
       <Button
         href={module.href}
         variant={getButtonVariant(module.href)}
         class={cn(
-          'justify-start items-center px-2.5 !no-underline hover:text-foreground text-muted-foreground font-normal',
-          isActive(module.href) && 'text-foreground'
+          'items-center justify-start px-2.5 font-normal text-muted-foreground !no-underline hover:text-foreground',
+          isActive(module.href) && 'text-foreground',
         )}
       >
         <svelte:component
           this={module.icon}
-          class="mr-2 mb-px"
+          class="mb-px mr-2"
           size={18}
         />
         {module.name}

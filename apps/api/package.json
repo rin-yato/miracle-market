@@ -8,7 +8,7 @@
     "dev": "bun run --watch src/index.ts",
     "db:push": "drizzle-kit push:pg",
     "studio": "drizzle-kit studio --port 3010",
-    "postinstall": "bun install"
+    "lint": "bun eslint ."
   },
   "dependencies": {
     "@elysiajs/cors": "^0.6.0",
@@ -20,13 +20,22 @@
     "@types/pg": "^8.10.2",
     "dotenv": "^16.3.1",
     "drizzle-orm": "^0.28.6",
-    "elysia": "^0.7.12",
+    "elysia": "^0.7.13",
     "lucia": "^2.7.0",
     "pg": "^8.11.3",
     "redis": "^4.6.10"
   },
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
     "bun-types": "^1.0.3",
-    "drizzle-kit": "^0.19.13"
+    "drizzle-kit": "^0.19.13",
+    "eslint": "^8.0.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-config-xo": "^0.43.1",
+    "eslint-config-xo-typescript": "^1.0.1",
+    "eslint-plugin-prettier": "^5.0.0",
+    "prettier": "^3.0.3",
+    "typescript": "^5.0.2"
   }
 }

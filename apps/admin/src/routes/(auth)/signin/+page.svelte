@@ -83,7 +83,7 @@
 
     <div class="my-5 flex items-center">
       <Separator class="flex-1" />
-      <span class="text-muted-foreground mx-4">or sign in with</span>
+      <span class="mx-4 text-muted-foreground">or sign in with</span>
       <Separator class="flex-1" />
     </div>
 

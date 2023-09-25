@@ -1,31 +1,24 @@
-import { lucia as Lucia } from 'lucia';
+import { lucia as initLucia } from 'lucia';
 import { elysia } from 'lucia/middleware';
 import { pg } from '@lucia-auth/adapter-postgresql';
-import {
-  connectionPool,
-  redisClient,
-} from '../lib/db/drizzle';
+import { connectionPool, redisClient } from '../lib/db/drizzle';
 import { redis } from '@lucia-auth/adapter-session-redis';
-import { Handler } from 'elysia';
+import { type Handler } from 'elysia';
 
-const luciaClient = Lucia({
+const luciaClient = initLucia({
   adapter: {
     user: pg(connectionPool, {
       user: 'users',
       session: 'sessions',
       key: 'keys',
     }),
-    // @ts-ignore
     session: redis(redisClient),
   },
 
   middleware: elysia(),
 
   env:
-    (process.env.ENV ?? process.env.NODE_ENV) ===
-    'production'
-      ? 'PROD'
-      : 'DEV',
+    (process.env.ENV ?? process.env.NODE_ENV) === 'production' ? 'PROD' : 'DEV',
 
   experimental: {
     debugMode: true,
@@ -41,26 +34,21 @@ const luciaClient = Lucia({
     hostHeader: '*',
   },
 
-  getUserAttributes: data => {
+  getUserAttributes(data) {
     return {
       username: data.username,
     };
   },
 });
 
-const sessionGuard: Handler = async ({
-  set,
-  cookie: { session },
-}) => {
+const sessionGuard: Handler = async ({ set, cookie: { session } }) => {
   if (!session.value) {
     set.status = 'Unauthorized';
     return `Unauthorized`;
   }
 
   try {
-    await luciaClient.validateSession(
-      session.value,
-    );
+    await luciaClient.validateSession(session.value);
   } catch (error) {
     set.status = 'Unauthorized';
 

@@ -8,9 +8,9 @@ export const handle = async ({ event, resolve }) => {
   const user = await eden.auth.profile.get({
     $fetch: {
       headers: {
-        'Cookie': `session=${cookie}`,
-      }
-    }
+        Cookie: `session=${cookie}`,
+      },
+    },
   });
 
   console.log('cookie', cookie);

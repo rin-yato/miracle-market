@@ -26,5 +26,5 @@ export {
   Footer as TableFooter,
   Head as TableHead,
   Header as TableHeader,
-  Row as TableRow
+  Row as TableRow,
 };
