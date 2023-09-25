@@ -1,9 +1,12 @@
-import { lucia as Lucia, User } from 'lucia';
+import { lucia as Lucia } from 'lucia';
 import { elysia } from 'lucia/middleware';
 import { pg } from '@lucia-auth/adapter-postgresql';
-import { connectionPool, redisClient } from '../lib/db/drizzle';
+import {
+  connectionPool,
+  redisClient,
+} from '../lib/db/drizzle';
 import { redis } from '@lucia-auth/adapter-session-redis';
-import { HookHandler } from 'elysia';
+import { Handler } from 'elysia';
 
 const luciaClient = Lucia({
   adapter: {
@@ -12,17 +15,32 @@ const luciaClient = Lucia({
       session: 'sessions',
       key: 'keys',
     }),
+    // @ts-ignore
     session: redis(redisClient),
   },
+
   middleware: elysia(),
+
   env:
-    (process.env.ENV ?? process.env.NODE_ENV) === 'production' ? 'PROD' : 'DEV',
+    (process.env.ENV ?? process.env.NODE_ENV) ===
+    'production'
+      ? 'PROD'
+      : 'DEV',
+
   experimental: {
     debugMode: true,
   },
+
   sessionCookie: {
     expires: false,
   },
+
+  csrfProtection: {
+    host: '*',
+    allowedSubDomains: '*',
+    hostHeader: '*',
+  },
+
   getUserAttributes: data => {
     return {
       username: data.username,
@@ -30,28 +48,29 @@ const luciaClient = Lucia({
   },
 });
 
+const sessionGuard: Handler = async ({
+  set,
+  cookie: { session },
+}) => {
+  if (!session.value) {
+    set.status = 'Unauthorized';
+    return `Unauthorized`;
+  }
+
+  try {
+    await luciaClient.validateSession(
+      session.value,
+    );
+  } catch (error) {
+    set.status = 'Unauthorized';
+
+    return `Unauthorized`;
+  }
+};
+
 export const lucia = {
   ...luciaClient,
-  async sessionGuard({
-    cookie: { session },
-    set,
-  }: Parameters<HookHandler>[0] & {
-    cookie: Record<string, string>;
-  }) {
-    if (!session) {
-      set.status = 401;
-
-      return `Unauthorized`;
-    }
-
-    try {
-      await luciaClient.validateSession(session);
-    } catch (error) {
-      set.status = 401;
-
-      return `Unauthorized`;
-    }
-  },
+  sessionGuard,
 };
 
 export type Auth = typeof luciaClient & {

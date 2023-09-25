@@ -1,0 +1,17 @@
+{
+  "name": "libs",
+  "version": "0.0.1",
+  "module": "./src/index.ts",
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "dependencies": {
+    "@elysiajs/eden": "^0.7.2"
+  },
+  "devDependencies": {
+    "api": "workspace:*",
+    "elysia": "^0.7.12",
+    "tsconfig": "workspace:*",
+    "typescript": "^5.0.0"
+  }
+}

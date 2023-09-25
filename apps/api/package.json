@@ -1,30 +1,32 @@
 {
   "name": "api",
-  "version": "0.0.0",
+  "version": "0.0.1",
+  "module": "./src/index.ts",
+  "main": "./src/index.ts",
+  "type": "module",
   "scripts": {
     "dev": "bun run --watch src/index.ts",
     "db:push": "drizzle-kit push:pg",
-    "studio": "drizzle-kit studio --port 3010"
+    "studio": "drizzle-kit studio --port 3010",
+    "postinstall": "bun install"
   },
   "dependencies": {
-    "@elysiajs/cookie": "^0.6.1",
     "@elysiajs/cors": "^0.6.0",
     "@elysiajs/static": "^0.6.0",
-    "@elysiajs/swagger": "^0.6.1",
+    "@elysiajs/swagger": "^0.7.2",
     "@lucia-auth/adapter-postgresql": "^2.0.1",
     "@lucia-auth/adapter-session-redis": "^2.1.1",
     "@sinclair/typebox": "^0.31.14",
     "@types/pg": "^8.10.2",
     "dotenv": "^16.3.1",
     "drizzle-orm": "^0.28.6",
-    "elysia": "latest",
-    "lucia": "latest",
-    "redis": "^4.6.8"
+    "elysia": "^0.7.12",
+    "lucia": "^2.7.0",
+    "pg": "^8.11.3",
+    "redis": "^4.6.10"
   },
   "devDependencies": {
-    "bun-types": "latest",
+    "bun-types": "^1.0.3",
     "drizzle-kit": "^0.19.13"
-  },
-  "module": "src/index.js",
-  "type": "module"
+  }
 }
