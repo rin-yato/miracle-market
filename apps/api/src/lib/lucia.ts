@@ -1,7 +1,7 @@
 import { lucia as initLucia } from 'lucia';
 import { elysia } from 'lucia/middleware';
 import { pg } from '@lucia-auth/adapter-postgresql';
-import { connectionPool, redisClient } from '../lib/db/drizzle';
+import { connectionPool, redisClient } from '@/lib/db/drizzle';
 import { redis } from '@lucia-auth/adapter-session-redis';
 import { type Handler } from 'elysia';
 
