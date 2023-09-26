@@ -1,7 +1,8 @@
 import { bigint, pgTable, varchar } from 'drizzle-orm/pg-core';
-import { user } from './users';
+import { users } from './users';
+import { relations } from 'drizzle-orm';
 
-export const session = pgTable('sessions', {
+export const sessions = pgTable('sessions', {
   id: varchar('id', {
     length: 128,
   }).primaryKey(),
@@ -9,7 +10,7 @@ export const session = pgTable('sessions', {
     length: 15,
   })
     .notNull()
-    .references(() => user.id),
+    .references(() => users.id),
   activeExpires: bigint('active_expires', {
     mode: 'number',
   }).notNull(),
@@ -17,3 +18,10 @@ export const session = pgTable('sessions', {
     mode: 'number',
   }).notNull(),
 });
+
+export const sessionsRelations = relations(sessions, ({ one }) => ({
+  user: one(users, {
+    fields: [sessions.userId],
+    references: [users.id],
+  }),
+}));
