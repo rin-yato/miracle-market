@@ -8,6 +8,7 @@ module.exports = {
     ecmaVersion: 'latest',
     sourceType: 'module',
     project: './tsconfig.json',
+    tsconfigRootDir: import.meta.dir,
   },
   rules: {
     '@typescript-eslint/no-unsafe-argument': 'off',

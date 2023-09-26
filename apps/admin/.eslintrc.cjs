@@ -28,6 +28,7 @@ module.exports = {
     ecmaVersion: 2020,
     extraFileExtensions: ['.svelte'],
     project: './tsconfig.json',
+    tsconfigRootDir: __dirname,
   },
   env: {
     browser: true,

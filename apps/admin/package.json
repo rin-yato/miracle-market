@@ -40,6 +40,7 @@
     "@tabler/icons-svelte": "^2.34.0",
     "bits-ui": "^0.5.7",
     "clsx": "^2.0.0",
+    "esm-env": "^1.0.0",
     "formsnap": "^0.0.9",
     "libs": "workspace:*",
     "radix-icons-svelte": "^1.2.1",
