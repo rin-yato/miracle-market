@@ -4,16 +4,15 @@ import { eden } from 'libs';
 const allowedRoutes = ['/signin', '/signup', '/forgot-password'];
 
 export const handle = async ({ event, resolve }) => {
-  const cookie = event.cookies.get('session');
   const user = await eden.auth.profile.get({
     $fetch: {
+      credentials: 'include',
       headers: {
-        Cookie: `session=${cookie}`,
+        Cookie: 'session=' + event.cookies.get('session'),
       },
     },
   });
 
-  console.log('cookie', cookie);
   console.log('user', user);
 
   // If not signed in, redirect to sign in page

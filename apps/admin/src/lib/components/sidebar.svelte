@@ -3,13 +3,15 @@
   import { Button } from '$lib/components/ui/button';
   import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar/';
   import {
-    IconCurrencyDollar,
     IconDiscount2,
     IconSettings,
     IconShoppingBag,
     IconCategory,
+    IconLogout,
   } from '@tabler/icons-svelte';
   import { page } from '$app/stores';
+  import { eden } from 'libs';
+  import { goto } from '$app/navigation';
 
   let className: string | null | undefined = undefined;
 
@@ -19,6 +21,18 @@
 
   $: getButtonVariant = (path: string) =>
     isActive(path) ? 'secondary' : 'link';
+
+  const handleSignout = async () => {
+    try {
+      await eden.auth['sign-out'].get();
+      goto('/signin', {
+        replaceState: true,
+        invalidateAll: true,
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const modules = [
     {
@@ -44,9 +58,14 @@
   ];
 </script>
 
-<aside class={cn('min-w-[250px] border-r bg-white px-5  py-5', className)}>
+<aside
+  class={cn(
+    'flex min-w-[250px] flex-col border-r bg-white px-5 py-5',
+    className,
+  )}
+>
   <header class="space-y-4 px-2.5">
-    <Avatar class="ring-1 ring-primary ring-offset-2">
+    <Avatar class="ring-primary ring-1 ring-offset-2">
       <AvatarImage
         src="https://source.boringavatars.com/beam/60/dailykicks"
       />
@@ -55,16 +74,16 @@
 
     <div>
       <p class="text-muted-foreground">Shop</p>
-      <h1 class="font-semibold">Daily Kicks</h1>
+      <h5 class="font-semibold">Daily Kicks</h5>
     </div>
   </header>
-  <div class="mt-10 flex flex-col gap-1.5">
+  <div class="mt-10 flex flex-1 flex-col gap-1.5">
     {#each modules as module}
       <Button
         href={module.href}
         variant={getButtonVariant(module.href)}
         class={cn(
-          'items-center justify-start px-2.5 font-normal text-muted-foreground !no-underline hover:text-foreground',
+          'text-muted-foreground hover:text-foreground items-center justify-start px-2.5 font-normal !no-underline',
           isActive(module.href) && 'text-foreground',
         )}
       >
@@ -76,5 +95,18 @@
         {module.name}
       </Button>
     {/each}
+
+    <div class="mt-auto flex flex-col">
+      <Button
+        on:click={handleSignout}
+        variant="secondary"
+        class={cn(
+          'text-muted-foreground items-center justify-start bg-rose-300/10 px-2.5 font-normal text-rose-400 !no-underline hover:bg-rose-300/20 hover:text-rose-500',
+        )}
+      >
+        <IconLogout size={18} class="mr-2" />
+        Signout
+      </Button>
+    </div>
   </div>
 </aside>

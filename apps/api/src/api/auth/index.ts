@@ -86,7 +86,9 @@ export const AuthModule = new Elysia().group('/auth', (app) =>
     .get(
       '/sign-out',
       async ({ cookie: { session } }) => {
+        console.log('here');
         await lucia.invalidateSession(session.value);
+        console.log('here2');
 
         // Clear session cookie
         session.remove();
@@ -99,6 +101,9 @@ export const AuthModule = new Elysia().group('/auth', (app) =>
           tags: ['Auth'],
           security: [{ cookieAuth: [] }],
         },
+        cookie: t.Cookie({
+          session: t.String(),
+        }),
       },
     )
 

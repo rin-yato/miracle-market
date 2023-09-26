@@ -41,7 +41,7 @@
     Create an Account
   </Button>
   <section class="rounded-2xl border bg-white px-16 pb-16 [&>*]:max-w-xs">
-    <div class="my-10">
+    <div class="mt-10 mb-6">
       <h1>Sign In</h1>
       <p class="text-muted-foreground">
         Welcome back to Miracle Market. Please sign in to your account to
