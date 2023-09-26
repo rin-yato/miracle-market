@@ -1,7 +1,8 @@
 import { bigint, boolean, pgTable, varchar } from 'drizzle-orm/pg-core';
-import { user } from './users';
+import { users } from './users';
+import { relations } from 'drizzle-orm';
 
-export const key = pgTable('keys', {
+export const keys = pgTable('keys', {
   id: varchar('id', {
     length: 255,
   }).primaryKey(),
@@ -9,7 +10,7 @@ export const key = pgTable('keys', {
     length: 15,
   })
     .notNull()
-    .references(() => user.id),
+    .references(() => users.id),
   primaryKey: boolean('primary_key'),
   hashedPassword: varchar('hashed_password', {
     length: 255,
@@ -18,3 +19,10 @@ export const key = pgTable('keys', {
     mode: 'number',
   }),
 });
+
+export const keysRelations = relations(keys, ({ one }) => ({
+  user: one(users, {
+    fields: [keys.userId],
+    references: [users.id],
+  }),
+}));

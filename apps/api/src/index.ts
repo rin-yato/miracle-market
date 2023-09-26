@@ -39,7 +39,7 @@ const app = new Elysia()
     }),
   )
   .use(AuthModule)
-  .get('/', async () => db.query.user.findMany())
+  .get('/', async () => db.query.categories.findMany())
   .listen(3005);
 
 console.log(
