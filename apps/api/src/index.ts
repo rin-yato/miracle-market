@@ -1,8 +1,8 @@
 import { Elysia } from 'elysia';
 import { swagger } from '@elysiajs/swagger';
+import { cors } from '@elysiajs/cors';
 import { AuthModule } from './api/auth';
 import { db } from './lib/db/drizzle';
-import cors from '@elysiajs/cors';
 
 const app = new Elysia()
   .use(
@@ -43,7 +43,7 @@ const app = new Elysia()
   .listen(3005);
 
 console.log(
-  `🦊 Elysia is running at ${app.server?.hostname}:${app.server?.port}`,
+  `🦊 Elysia is running at http://${app.server?.hostname}:${app.server?.port}`,
 );
 
 export type App = typeof app;

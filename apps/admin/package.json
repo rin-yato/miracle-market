@@ -8,7 +8,7 @@
     "preview": "vite preview",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
-    "lint": "pnpm format && eslint --ext .js,.cjs,.ts,.svelte .",
+    "lint": "eslint --ext .js,.cjs,.ts,.svelte . --fix",
     "format": "prettier --write ."
   },
   "devDependencies": {
@@ -44,6 +44,7 @@
     "formsnap": "^0.0.9",
     "libs": "workspace:*",
     "radix-icons-svelte": "^1.2.1",
+    "svelte-french-toast": "^1.2.0",
     "sveltekit-superforms": "^1.6.1",
     "tailwind-merge": "^1.14.0",
     "tailwind-variants": "^0.1.14",

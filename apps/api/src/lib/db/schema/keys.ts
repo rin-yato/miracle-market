@@ -1,6 +1,6 @@
-import { bigint, boolean, pgTable, varchar } from 'drizzle-orm/pg-core';
-import { users } from './users';
-import { relations } from 'drizzle-orm';
+import { bigint, boolean, pgTable, varchar } from 'drizzle-orm/pg-core'
+import { relations } from 'drizzle-orm'
+import { users } from './users'
 
 export const keys = pgTable('keys', {
   id: varchar('id', {
@@ -18,11 +18,11 @@ export const keys = pgTable('keys', {
   expires: bigint('expires', {
     mode: 'number',
   }),
-});
+})
 
 export const keysRelations = relations(keys, ({ one }) => ({
   user: one(users, {
     fields: [keys.userId],
     references: [users.id],
   }),
-}));
+}))

@@ -1,5 +1,5 @@
 import { relations } from 'drizzle-orm';
-import { pgTable, timestamp, varchar } from 'drizzle-orm/pg-core';
+import { boolean, pgTable, timestamp, varchar } from 'drizzle-orm/pg-core';
 import { categories } from './categories';
 import { subcategories } from './subcategories';
 import { products } from './products';
@@ -7,6 +7,7 @@ import { keys } from './keys';
 import { sessions } from './sessions';
 import { socials } from './socials';
 import { addresses } from './addresses';
+import { emailVerifications } from './email-verifications';
 
 export const users = pgTable('users', {
   id: varchar('id', {
@@ -15,6 +16,7 @@ export const users = pgTable('users', {
   }).primaryKey(),
   username: varchar('username').unique(),
   email: varchar('email').unique(),
+  emailVerified: boolean('emailVerified').notNull().default(false),
   avatar: varchar('avatar'),
   phoneNumber: varchar('phone_number'),
   description: varchar('description'),
@@ -25,6 +27,7 @@ export const users = pgTable('users', {
 export const userRelations = relations(users, ({ many, one }) => ({
   keys: many(keys),
   session: many(sessions),
+  emailVerifications: many(emailVerifications),
   categories: many(categories),
   subcategories: many(subcategories),
   products: many(products),
