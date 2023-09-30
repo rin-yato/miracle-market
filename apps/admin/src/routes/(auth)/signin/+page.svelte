@@ -8,8 +8,8 @@
   import { loginSchema } from './schema';
   import { Icons } from '$lib/components/icons';
   import { IconUserPlus } from '@tabler/icons-svelte';
-  import { redirect } from '@sveltejs/kit';
   import { goto } from '$app/navigation';
+  import { appConfigs } from '$lib/constants';
 
   export let data;
 
@@ -18,19 +18,18 @@
   const handleSubmit = handleFormSubmit(form, async (event) => {
     const { email, password } = event.form.data;
     try {
-      await eden.auth['sign-in'].post({
-        username: email,
+      const res = await eden.auth['sign-in'].post({
+        email,
         password,
-        $fetch: {
-          credentials: 'include',
-        },
       });
+
+      if (res.error) throw res.error;
 
       goto('/products', {
         replaceState: true,
       });
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   });
 </script>
@@ -41,7 +40,7 @@
     Create an Account
   </Button>
   <section class="rounded-2xl border bg-white px-16 pb-16 [&>*]:max-w-xs">
-    <div class="mt-10 mb-6">
+    <div class="mb-6 mt-10">
       <h1>Sign In</h1>
       <p class="text-muted-foreground">
         Welcome back to Miracle Market. Please sign in to your account to
@@ -83,12 +82,16 @@
 
     <div class="my-5 flex items-center">
       <Separator class="flex-1" />
-      <span class="mx-4 text-muted-foreground">or sign in with</span>
+      <span class="text-muted-foreground mx-4">or sign in with</span>
       <Separator class="flex-1" />
     </div>
 
     <div>
-      <Button variant="outline" class="w-full">
+      <Button
+        variant="outline"
+        class="w-full"
+        href={appConfigs.api.googleAuth}
+      >
         <Icons.Google size="20" class="mr-3" />
         Sign In with Google
       </Button>

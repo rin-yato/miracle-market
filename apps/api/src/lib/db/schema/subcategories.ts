@@ -2,6 +2,7 @@ import { relations } from 'drizzle-orm';
 import { pgTable, timestamp, uuid, varchar } from 'drizzle-orm/pg-core';
 import { products } from './products';
 import { categories } from './categories';
+import { users } from './users';
 
 export const subcategories = pgTable('subcategories', {
   id: uuid('id').primaryKey().defaultRandom(),
@@ -19,6 +20,10 @@ export const subcategoriesRelations = relations(
     category: one(categories, {
       fields: [subcategories.categoryId],
       references: [categories.id],
+    }),
+    user: one(users, {
+      fields: [subcategories.userId],
+      references: [users.id],
     }),
   }),
 );

@@ -1,11 +1,13 @@
 import { lucia as initLucia } from 'lucia';
 import { elysia } from 'lucia/middleware';
 import { pg } from '@lucia-auth/adapter-postgresql';
-import { connectionPool, redisClient } from '@/lib/db/drizzle';
 import { redis } from '@lucia-auth/adapter-session-redis';
-import { type Handler } from 'elysia';
+import { google } from '@lucia-auth/oauth/providers';
+import { connectionPool, redisClient } from '@/lib/db/drizzle';
+import { secrets } from '@/constant/secrets';
+import { sessionGuard } from '@/api/auth/util';
 
-const luciaClient = initLucia({
+export const luciaClient = initLucia({
   adapter: {
     user: pg(connectionPool, {
       user: 'users',
@@ -37,30 +39,25 @@ const luciaClient = initLucia({
   getUserAttributes(data) {
     return {
       username: data.username,
+      email: data.email,
+      emailVerified: data.emailVerified,
     };
   },
 });
 
-const sessionGuard: Handler = async ({ set, cookie: { session } }) => {
-  if (!session.value) {
-    set.status = 'Unauthorized';
-    return `Unauthorized`;
-  }
+const googleAuth = google(luciaClient, {
+  clientId: secrets.google.clientId,
+  clientSecret: secrets.google.clientSecret,
+  redirectUri: secrets.google.redirectUrl,
+});
 
-  try {
-    await luciaClient.validateSession(session.value);
-  } catch (error) {
-    set.status = 'Unauthorized';
-
-    return `Unauthorized`;
-  }
+export type Auth = typeof luciaClient & {
+  sessionGuard: typeof sessionGuard;
+  google: typeof googleAuth;
 };
 
 export const lucia = {
   ...luciaClient,
   sessionGuard,
-};
-
-export type Auth = typeof luciaClient & {
-  sessionGuard: typeof lucia.sessionGuard;
-};
+  google: googleAuth,
+} as Auth;

@@ -12,11 +12,11 @@
   import { cn } from '$lib/utils';
   import { IconLogout } from '@tabler/icons-svelte';
 
-  function onToggleHandler(): void {
+  const onToggleHandler = () => {
     $modeCurrent = !$modeCurrent;
     setModeUserPrefers($modeCurrent);
     setModeCurrent($modeCurrent);
-  }
+  };
 
   // Lifecycle
   onMount(() => {
@@ -31,7 +31,7 @@
   on:click={onToggleHandler}
   variant="secondary"
   class={cn(
-    'text-muted-foreground items-center justify-start bg-rose-300/10 px-2.5 font-normal text-rose-400 !no-underline hover:bg-rose-300/20 hover:text-rose-500',
+    'items-center justify-start bg-rose-300/10 px-2.5 font-normal text-muted-foreground text-rose-400 !no-underline hover:bg-rose-300/20 hover:text-rose-500',
   )}
 >
   <IconLogout size={18} class="mr-2" />

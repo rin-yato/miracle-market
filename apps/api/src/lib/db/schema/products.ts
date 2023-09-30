@@ -1,4 +1,4 @@
-import { relations } from 'drizzle-orm';
+import { relations } from 'drizzle-orm'
 import {
   json,
   pgTable,
@@ -6,15 +6,15 @@ import {
   timestamp,
   uuid,
   varchar,
-} from 'drizzle-orm/pg-core';
-import { categories } from './categories';
-import { users } from './users';
-import { subcategories } from './subcategories';
+} from 'drizzle-orm/pg-core'
+import { categories } from './categories'
+import { users } from './users'
+import { subcategories } from './subcategories'
 
-type Media = {
-  thumbnail: string;
-  images: string[];
-};
+interface Media {
+  thumbnail: string
+  images: string[]
+}
 
 export const products = pgTable('products', {
   id: uuid('id').primaryKey(),
@@ -31,7 +31,7 @@ export const products = pgTable('products', {
   discount: real('discount'),
   createdAt: timestamp('created_at').notNull().defaultNow(),
   updatedAt: timestamp('updated_at').notNull().defaultNow(),
-});
+})
 
 export const productsRelations = relations(products, ({ one }) => ({
   category: one(categories, {
@@ -46,4 +46,4 @@ export const productsRelations = relations(products, ({ one }) => ({
     fields: [products.userId],
     references: [users.id],
   }),
-}));
+}))

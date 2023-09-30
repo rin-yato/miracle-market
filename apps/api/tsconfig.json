@@ -10,11 +10,10 @@
     "strictFunctionTypes": true,
     "alwaysStrict": true,
     "skipLibCheck": true,
-    "baseUrl": ".",
+    "baseUrl": "./",
     "paths": {
       "@/*": ["src/*"]
     }
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "*.js", "*.ts"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "eslint.config.js"]
 }

@@ -65,7 +65,7 @@
   )}
 >
   <header class="space-y-4 px-2.5">
-    <Avatar class="ring-primary ring-1 ring-offset-2">
+    <Avatar class="ring-1 ring-primary ring-offset-2">
       <AvatarImage
         src="https://source.boringavatars.com/beam/60/dailykicks"
       />
@@ -83,7 +83,7 @@
         href={module.href}
         variant={getButtonVariant(module.href)}
         class={cn(
-          'text-muted-foreground hover:text-foreground items-center justify-start px-2.5 font-normal !no-underline',
+          'items-center justify-start px-2.5 font-normal text-muted-foreground !no-underline hover:text-foreground',
           isActive(module.href) && 'text-foreground',
         )}
       >
@@ -101,7 +101,7 @@
         on:click={handleSignout}
         variant="secondary"
         class={cn(
-          'text-muted-foreground items-center justify-start bg-rose-300/10 px-2.5 font-normal text-rose-400 !no-underline hover:bg-rose-300/20 hover:text-rose-500',
+          'items-center justify-start bg-rose-300/10 px-2.5 font-normal text-muted-foreground text-rose-400 !no-underline hover:bg-rose-300/20 hover:text-rose-500',
         )}
       >
         <IconLogout size={18} class="mr-2" />

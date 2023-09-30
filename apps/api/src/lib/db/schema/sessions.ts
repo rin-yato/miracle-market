@@ -1,6 +1,6 @@
-import { bigint, pgTable, varchar } from 'drizzle-orm/pg-core';
-import { users } from './users';
-import { relations } from 'drizzle-orm';
+import { bigint, pgTable, varchar } from 'drizzle-orm/pg-core'
+import { relations } from 'drizzle-orm'
+import { users } from './users'
 
 export const sessions = pgTable('sessions', {
   id: varchar('id', {
@@ -17,11 +17,11 @@ export const sessions = pgTable('sessions', {
   idleExpires: bigint('idle_expires', {
     mode: 'number',
   }).notNull(),
-});
+})
 
 export const sessionsRelations = relations(sessions, ({ one }) => ({
   user: one(users, {
     fields: [sessions.userId],
     references: [users.id],
   }),
-}));
+}))
