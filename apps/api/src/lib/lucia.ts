@@ -3,9 +3,9 @@ import { elysia } from 'lucia/middleware';
 import { pg } from '@lucia-auth/adapter-postgresql';
 import { redis } from '@lucia-auth/adapter-session-redis';
 import { google } from '@lucia-auth/oauth/providers';
+import type { Handler } from 'elysia';
 import { connectionPool, redisClient } from '@/lib/db/drizzle';
 import { secrets } from '@/constant/secrets';
-import { Handler } from 'elysia';
 
 export const luciaClient = initLucia({
   adapter: {

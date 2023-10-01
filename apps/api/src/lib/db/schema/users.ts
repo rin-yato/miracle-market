@@ -1,5 +1,7 @@
 import { relations } from 'drizzle-orm';
 import { boolean, pgTable, timestamp, varchar } from 'drizzle-orm/pg-core';
+import { createSelectSchema } from 'drizzle-typebox';
+import type { Static } from '@sinclair/typebox';
 import { categories } from './categories';
 import { subcategories } from './subcategories';
 import { products } from './products';
@@ -8,8 +10,6 @@ import { sessions } from './sessions';
 import { socials } from './socials';
 import { addresses } from './addresses';
 import { emailVerifications } from './email-verifications';
-import { createSelectSchema } from 'drizzle-typebox';
-import { Static } from '@sinclair/typebox';
 
 export const users = pgTable('users', {
   id: varchar('id', {

@@ -1,5 +1,6 @@
 import { Elysia, t } from 'elysia';
 import { OAuthRequestError } from '@lucia-auth/oauth';
+import { Value } from '@sinclair/typebox/value';
 import { authSchema, signupSchema } from './schema';
 import {
   generateEmailVerificationToken,
@@ -8,9 +9,8 @@ import {
 import { sendVerificationEmail } from './email';
 import { lucia } from '@/lib/lucia';
 import { db } from '@/lib/db/drizzle';
-import { User, userSchema } from '@/lib/db/schema/users';
+import { type User, userSchema } from '@/lib/db/schema/users';
 import { betterTryCatch } from '@/lib/util/flow';
-import { Value } from '@sinclair/typebox/value';
 
 export const AuthModule = new Elysia({ prefix: '/auth' })
 

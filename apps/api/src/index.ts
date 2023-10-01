@@ -12,7 +12,7 @@ const app = new Elysia()
       allowedHeaders: ['Content-Type', 'Cookie'],
     }),
   )
-  .onError(({ code, error }) => {
+  .onError(({ error }) => {
     return error;
   })
   .use(
