@@ -3,6 +3,7 @@ import { swagger } from '@elysiajs/swagger';
 import { cors } from '@elysiajs/cors';
 import { AuthModule } from './api/auth';
 import { db } from './lib/db/drizzle';
+import { Effect } from 'effect';
 
 const app = new Elysia()
   .use(
@@ -12,6 +13,9 @@ const app = new Elysia()
       allowedHeaders: ['Content-Type', 'Cookie'],
     }),
   )
+  .onError(({ code, error }) => {
+    return error;
+  })
   .use(
     swagger({
       documentation: {
