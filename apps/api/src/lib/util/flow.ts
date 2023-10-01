@@ -1,10 +1,29 @@
-export async function flow<TFunction extends (...args: any) => any, Error>(
-  fn: TFunction,
-  onError: (error: unknown) => Error,
-): Promise<ReturnType<TFunction> | Error> {
+export type Result<T> = [T, null] | [null, Error];
+
+export const betterTryCatch = async <T extends Promise<any> | (() => any)>(
+  fn: T,
+): Promise<Result<Awaited<T extends () => any ? ReturnType<T> : T>>> => {
   try {
-    return await fn();
+    let result;
+    if (typeof fn !== 'function') {
+      result = await fn;
+    } else {
+      result = await fn();
+    }
+    return [result, null];
   } catch (error) {
-    return onError(error);
+    if (error instanceof Error) {
+      return [null, error];
+    }
+
+    if (typeof error === 'string') {
+      return [null, new Error(error)];
+    }
+
+    if (error && typeof error === 'object' && 'message' in error) {
+      return [null, new Error(String(error.message), { cause: error })];
+    }
+
+    return [null, new Error('Unknown error')];
   }
-}
+};
