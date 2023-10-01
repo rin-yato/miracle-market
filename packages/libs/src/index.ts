@@ -1,1 +1,2 @@
-export * from "./eden";
+export * from './eden';
+export * from './better-try-catch';

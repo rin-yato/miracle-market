@@ -1,5 +1,7 @@
 import { relations } from 'drizzle-orm';
 import { boolean, pgTable, timestamp, varchar } from 'drizzle-orm/pg-core';
+import { createSelectSchema } from 'drizzle-typebox';
+import type { Static } from '@sinclair/typebox';
 import { categories } from './categories';
 import { subcategories } from './subcategories';
 import { products } from './products';
@@ -20,8 +22,8 @@ export const users = pgTable('users', {
   avatar: varchar('avatar'),
   phoneNumber: varchar('phone_number'),
   description: varchar('description'),
-  createdAt: timestamp('created_at').notNull().defaultNow(),
-  updatedAt: timestamp('updated_at').notNull().defaultNow(),
+  createdAt: timestamp('created_at', { mode: 'string' }).notNull().defaultNow(),
+  updatedAt: timestamp('updated_at', { mode: 'string' }).notNull().defaultNow(),
 });
 
 export const userRelations = relations(users, ({ many, one }) => ({
@@ -40,3 +42,7 @@ export const userRelations = relations(users, ({ many, one }) => ({
     references: [addresses.userId],
   }),
 }));
+
+export const userSchema = createSelectSchema(users);
+
+export type User = Static<typeof userSchema>;

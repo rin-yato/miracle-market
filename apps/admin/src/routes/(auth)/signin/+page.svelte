@@ -2,40 +2,65 @@
   import * as Form from '$lib/components/ui/form';
   import { Button } from '$lib/components/ui/button';
   import { Separator } from '$lib/components/ui/separator';
-  import { handleFormSubmit } from '$lib/utils';
+  import { cn, handleFormSubmit, parseError } from '$lib/utils';
   import { eden } from 'libs';
 
   import { loginSchema } from './schema';
   import { Icons } from '$lib/components/icons';
-  import { IconUserPlus } from '@tabler/icons-svelte';
+  import { IconLoader2, IconUserPlus } from '@tabler/icons-svelte';
   import { goto } from '$app/navigation';
   import { appConfigs } from '$lib/constants';
+  import toast from 'svelte-french-toast';
 
   export let data;
 
   const form = data.form;
 
+  let isSubmitting = false;
+
   const handleSubmit = handleFormSubmit(form, async (event) => {
+    if (isSubmitting) return;
+
+    isSubmitting = true;
+
+    const test = await eden.auth.profile.get()
+
+    const toastId = toast.loading('Signing in...');
+
     const { email, password } = event.form.data;
-    try {
-      const res = await eden.auth['sign-in'].post({
-        email,
-        password,
-      });
 
-      if (res.error) throw res.error;
+    const res = await eden.auth['sign-in'].post({
+      email,
+      password,
+    });
 
-      goto('/products', {
-        replaceState: true,
+    if (res.error) {
+      const err = parseError(res.error.value);
+      toast.error(err.message, {
+        id: toastId,
       });
-    } catch (error) {
-      console.error(error);
+      isSubmitting = false;
+
+      return;
     }
+
+    toast.success('Signed in successfully!', {
+      id: toastId,
+    });
+
+    goto('/products', {
+      replaceState: true,
+    });
   });
 </script>
 
 <main class="flex flex-1 flex-col items-center justify-center">
-  <Button variant="outline" href="/signup" class="fixed right-5 top-5">
+  <Button
+    disabled={isSubmitting}
+    variant="outline"
+    href="/signup"
+    class="fixed right-5 top-5"
+  >
     <IconUserPlus size={16} class="mr-2" />
     Create an Account
   </Button>
@@ -74,10 +99,23 @@
           <Form.Validation />
         </Form.Item>
       </Form.Field>
-      <Button variant="link" class="!my-0 px-0" href="/forgot-password">
+      <Button
+        disabled={isSubmitting}
+        variant="link"
+        class={cn(
+          '!my-0 px-0',
+          isSubmitting && 'pointer-events-none opacity-50',
+        )}
+        href="/forgot-password"
+      >
         Forgot Password?
       </Button>
-      <Form.Button class="w-full">Sign In</Form.Button>
+      <Form.Button class="w-full" disabled={isSubmitting}>
+        {#if isSubmitting}
+          <IconLoader2 size={16} class={cn('mr-2 animate-spin')} />
+        {/if}
+        Sign In
+      </Form.Button>
     </Form.Root>
 
     <div class="my-5 flex items-center">
@@ -88,8 +126,12 @@
 
     <div>
       <Button
+        disabled={isSubmitting}
         variant="outline"
-        class="w-full"
+        class={cn(
+          'w-full',
+          isSubmitting && 'pointer-events-none opacity-50',
+        )}
         href={appConfigs.api.googleAuth}
       >
         <Icons.Google size="20" class="mr-3" />

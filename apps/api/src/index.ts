@@ -12,6 +12,9 @@ const app = new Elysia()
       allowedHeaders: ['Content-Type', 'Cookie'],
     }),
   )
+  .onError(({ error }) => {
+    return error;
+  })
   .use(
     swagger({
       documentation: {

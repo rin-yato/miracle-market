@@ -1,6 +1,6 @@
 import { Elysia, t } from 'elysia';
-import { eq } from 'drizzle-orm';
 import { OAuthRequestError } from '@lucia-auth/oauth';
+import { Value } from '@sinclair/typebox/value';
 import { authSchema, signupSchema } from './schema';
 import {
   generateEmailVerificationToken,
@@ -9,7 +9,8 @@ import {
 import { sendVerificationEmail } from './email';
 import { lucia } from '@/lib/lucia';
 import { db } from '@/lib/db/drizzle';
-import { users } from '@/lib/db/schema/users';
+import { type User, userSchema } from '@/lib/db/schema/users';
+import { betterTryCatch } from '@/lib/util/flow';
 
 export const AuthModule = new Elysia({ prefix: '/auth' })
 
@@ -17,28 +18,33 @@ export const AuthModule = new Elysia({ prefix: '/auth' })
   .post(
     '/sign-up',
     async ({ body: { email, password, redirectUrl }, set }) => {
-      try {
-        const user = await lucia.createUser({
-          key: {
-            password,
-            providerId: 'email',
-            providerUserId: email.toLowerCase(),
-          },
+      const createUser = lucia.createUser({
+        key: {
+          password,
+          providerId: 'email',
+          providerUserId: email.toLowerCase(),
+        },
 
-          attributes: {
-            username: email.split('@')[0], // Use email as username
-            email,
-          },
+        attributes: {
+          username: email.split('@')[0], // Use email as username
+          email,
+        },
+      });
+
+      const [user, error] = await betterTryCatch(createUser);
+
+      if (error) {
+        set.status = 400;
+        throw new Error('An account with this email already exist.', {
+          cause: error,
         });
-
-        const token = await generateEmailVerificationToken(user.userId);
-        await sendVerificationEmail(email, token, redirectUrl)(); // higher order function
-
-        set.status = 'OK';
-        return 'OK';
-      } catch (error) {
-        set.status = 'Bad Request';
       }
+
+      const token = await generateEmailVerificationToken(user.userId);
+      await sendVerificationEmail(email, token, redirectUrl)();
+
+      set.status = 'OK';
+      return 'OK';
     },
     {
       body: signupSchema,
@@ -57,6 +63,12 @@ export const AuthModule = new Elysia({ prefix: '/auth' })
 
       try {
         const key = await lucia.useKey('email', email, password);
+        const user = await lucia.getUser(key.userId);
+
+        if (!user.emailVerified) {
+          set.status = 401;
+          return 'Please verify your email first';
+        }
 
         const createdSession = await lucia.createSession({
           userId: key.userId,
@@ -162,6 +174,7 @@ export const AuthModule = new Elysia({ prefix: '/auth' })
           attributes: {
             username: googleUser.name,
             avatar: googleUser.picture,
+            emailVerified: true,
           },
         });
 
@@ -236,18 +249,32 @@ export const AuthModule = new Elysia({ prefix: '/auth' })
     const currentSession = await lucia.getSession(session.value);
 
     return {
-      userId: currentSession.user.userId,
+      userId: currentSession.user.userId as string,
     };
   })
 
   // Get user profile
   .get(
     '/profile',
-    async ({ userId }) => {
-      const userFound = (
-        await db.select().from(users).where(eq(users.id, userId))
-      )[0];
-      return userFound;
+    async ({ userId, set }) => {
+      const userFound = await db.query.users.findFirst({
+        where: (user, { eq }) => eq(user.id, userId),
+      });
+
+      if (!userFound) {
+        set.status = 'Bad Request';
+        throw new Error('User not found');
+      }
+
+      const isValidUser = Value.Check(userSchema, userFound);
+
+      if (!isValidUser) {
+        set.status = 'Internal Server Error';
+        throw new Error('Internal Server Error');
+      }
+
+      set.status = 'OK';
+      return userFound as User;
     },
     {
       detail: {
@@ -255,12 +282,6 @@ export const AuthModule = new Elysia({ prefix: '/auth' })
         tags: ['Auth'],
         security: [{ cookieAuth: [] }],
       },
-      // response: {
-      //   200: t.Object({
-      //     username: t.Union([t.String(), t.Null()]),
-      //     id: t.String(),
-      //   }),
-      // },
     },
   )
 
