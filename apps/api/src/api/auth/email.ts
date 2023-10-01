@@ -27,7 +27,12 @@ export function EmailTemplate({
     <body style="background-color:#ffffff;font-family:-apple-system,BlinkMacSystemFont,&quot;Segoe UI&quot;,Roboto,Oxygen-Sans,Ubuntu,Cantarell,&quot;Helvetica Neue&quot;,sans-serif">
       <table align="center" role="presentation" cellSpacing="0" cellPadding="0" border="0" width="100%" style="max-width:37.5em;margin:0 auto;padding:20px 0 48px;width:560px">
         <tr style="width:100%">
-          <td><img alt="Linear" src="https://react-email-demo-ijnnx5hul-resend.vercel.app/static/linear-logo.png" width="42" height="42" style="display:block;outline:none;border:none;text-decoration:none;border-radius:21px;width:42px;height:42px" />
+          <td>
+            <span
+              style="font-size:24px;font-weight:600;color:#484848;letter-spacing:-0.5px;line-height:1.3"
+            >
+            MiracleMarket 
+            </span>
             <h1 style="font-size:24px;letter-spacing:-0.5px;line-height:1.3;font-weight:400;color:#484848;padding:17px 0 0">${title}</h1>
             <table style="padding:27px 0 27px" align="center" border="0" cellPadding="0" cellSpacing="0" role="presentation" width="100%">
               <tbody>
