@@ -2,7 +2,7 @@
   import * as Form from '$lib/components/ui/form';
   import { Button } from '$lib/components/ui/button';
   import { Separator } from '$lib/components/ui/separator';
-  import { handleFormSubmit } from '$lib/utils';
+  import { handleFormSubmit, parseError } from '$lib/utils';
   import { eden } from 'libs';
   import toast from 'svelte-french-toast';
 
@@ -24,21 +24,18 @@
   const handleSubmit = handleFormSubmit(form, async (event) => {
     const { email, password } = event.form.data;
 
-    const { data, error } = await eden.auth['sign-up'].post({
+    const { error } = await eden.auth['sign-up'].post({
       email,
       password,
       redirectUrl: `${appConfigs.url}/products`,
     });
 
     if (error) {
-      switch (error.status) {
-        case 400:
-          toast.error("");
-          break;
-      }
-
+      const err = parseError(error.value);
+      toast.error(err.message);
       return;
     }
+
     checkMailProps = {
       open: true,
       email,

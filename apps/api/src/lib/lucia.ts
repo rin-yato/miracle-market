@@ -5,7 +5,7 @@ import { redis } from '@lucia-auth/adapter-session-redis';
 import { google } from '@lucia-auth/oauth/providers';
 import { connectionPool, redisClient } from '@/lib/db/drizzle';
 import { secrets } from '@/constant/secrets';
-import { sessionGuard } from '@/api/auth/util';
+import { Handler } from 'elysia';
 
 export const luciaClient = initLucia({
   adapter: {
@@ -54,6 +54,21 @@ const googleAuth = google(luciaClient, {
 export type Auth = typeof luciaClient & {
   sessionGuard: typeof sessionGuard;
   google: typeof googleAuth;
+};
+
+export const sessionGuard: Handler = async ({ set, cookie: { session } }) => {
+  if (!session.value) {
+    set.status = 'Unauthorized';
+    return 'Unauthorized';
+  }
+
+  try {
+    await luciaClient.validateSession(session.value);
+  } catch (error) {
+    set.status = 'Unauthorized';
+
+    return 'Unauthorized';
+  }
 };
 
 export const lucia = {

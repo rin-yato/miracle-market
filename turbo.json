@@ -7,7 +7,8 @@
       "outputs": [".next/**", "!.next/cache/**"]
     },
     "lint": {
-      "cache": true
+      "cache": true,
+      "persistent": true
     },
     "dev": {
       "cache": false,

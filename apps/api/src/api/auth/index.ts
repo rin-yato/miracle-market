@@ -10,6 +10,7 @@ import { sendVerificationEmail } from './email';
 import { lucia } from '@/lib/lucia';
 import { db } from '@/lib/db/drizzle';
 import { users } from '@/lib/db/schema/users';
+import { betterTryCatch } from '@/lib/util/flow';
 
 export const AuthModule = new Elysia({ prefix: '/auth' })
 
@@ -17,28 +18,31 @@ export const AuthModule = new Elysia({ prefix: '/auth' })
   .post(
     '/sign-up',
     async ({ body: { email, password, redirectUrl }, set }) => {
-      try {
-        const user = await lucia.createUser({
-          key: {
-            password,
-            providerId: 'email',
-            providerUserId: email.toLowerCase(),
-          },
+      const createUser = lucia.createUser({
+        key: {
+          password,
+          providerId: 'email',
+          providerUserId: email.toLowerCase(),
+        },
 
-          attributes: {
-            username: email.split('@')[0], // Use email as username
-            email,
-          },
-        });
+        attributes: {
+          username: email.split('@')[0], // Use email as username
+          email,
+        },
+      });
 
-        const token = await generateEmailVerificationToken(user.userId);
-        await sendVerificationEmail(email, token, redirectUrl)(); // higher order function
+      const [user, error] = await betterTryCatch(createUser);
 
-        set.status = 'OK';
-        return 'OK';
-      } catch (error) {
-        set.status = 'Bad Request';
+      if (error) {
+        set.status = 400;
+        throw new Error('An account with this email already exist.', { cause: error });
       }
+
+      const token = await generateEmailVerificationToken(user.userId);
+      await sendVerificationEmail(email, token, redirectUrl)();
+
+      set.status = 'OK';
+      return 'OK';
     },
     {
       body: signupSchema,
