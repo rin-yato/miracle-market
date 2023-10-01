@@ -20,12 +20,19 @@ export const handle = async ({ event, resolve }) => {
   });
 
   // If not signed in, redirect to sign in page
-  if (user.error && !allowedRoutes.includes(event.url.pathname)) {
+  if (
+    (user.error || !user.data.emailVerified) &&
+    !allowedRoutes.includes(event.url.pathname)
+  ) {
     throw redirect(303, '/signin');
   }
 
   // If signed in, redirect to home page
-  if (!user.error && allowedRoutes.includes(event.url.pathname)) {
+  if (
+    !user.error &&
+    user.data.emailVerified &&
+    allowedRoutes.includes(event.url.pathname)
+  ) {
     event.locals.user = user.data;
     throw redirect(303, '/products');
   }

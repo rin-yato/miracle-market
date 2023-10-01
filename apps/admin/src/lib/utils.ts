@@ -82,20 +82,25 @@ export const handleFormSubmit =
   };
 
 export const parseError = (error: unknown) => {
-  let err;
+  let err: unknown;
   try {
     if (typeof error === 'string') {
-      err = JSON.parse(error);
-      if (
-        err &&
-        typeof err === 'object' &&
-        'message' in err &&
-        'cause' in err &&
-        'name' in err
-      ) {
-        return err as Error;
+      try {
+        err = JSON.parse(error);
+        if (
+          err &&
+          typeof err === 'object' &&
+          'message' in err &&
+          'cause' in err &&
+          'name' in err
+        ) {
+          return err as Error;
+        }
+      } catch (_) {
+        return new Error(error, { cause: err });
       }
     }
+
     if (err instanceof Error) {
       return err;
     }

@@ -2,13 +2,13 @@
   import * as Form from '$lib/components/ui/form';
   import { Button } from '$lib/components/ui/button';
   import { Separator } from '$lib/components/ui/separator';
-  import { handleFormSubmit, parseError } from '$lib/utils';
+  import { cn, handleFormSubmit, parseError } from '$lib/utils';
   import { eden } from 'libs';
   import toast from 'svelte-french-toast';
 
   import { signupSchema } from './schema';
   import { Icons } from '$lib/components/icons';
-  import { IconUserCheck } from '@tabler/icons-svelte';
+  import { IconLoader2, IconUserCheck } from '@tabler/icons-svelte';
   import { appConfigs } from '$lib/constants';
   import CheckMail from './check-mail.svelte';
 
@@ -16,12 +16,20 @@
 
   const form = data.form;
 
+  let isSubmitting = false;
+
   let checkMailProps = {
     open: false,
     email: '',
   };
 
   const handleSubmit = handleFormSubmit(form, async (event) => {
+    if (isSubmitting) return;
+
+    isSubmitting = true;
+
+    const toastId = toast.loading('Signing up...');
+
     const { email, password } = event.form.data;
 
     const { error } = await eden.auth['sign-up'].post({
@@ -32,9 +40,15 @@
 
     if (error) {
       const err = parseError(error.value);
-      toast.error(err.message);
+
+      toast.error(err.message, { id: toastId });
+      isSubmitting = false;
       return;
     }
+
+    toast.success('Signed up successfully! Please verify your email.', {
+      id: toastId,
+    });
 
     checkMailProps = {
       open: true,
@@ -46,7 +60,12 @@
 <CheckMail {...checkMailProps} />
 
 <main class="flex flex-1 flex-col items-center justify-center">
-  <Button variant="outline" href="/signin" class="fixed right-5 top-5">
+  <Button
+    disabled={isSubmitting}
+    variant="outline"
+    href="/signin"
+    class="fixed right-5 top-5"
+  >
     <IconUserCheck size={16} class="mr-2" />
     Mean account hz?
   </Button>
@@ -85,10 +104,23 @@
           <Form.Validation />
         </Form.Item>
       </Form.Field>
-      <Button variant="link" class="!my-0 px-0" href="/forgot-password">
+      <Button
+        disabled={isSubmitting}
+        variant="link"
+        class={cn(
+          '!my-0 px-0',
+          isSubmitting && 'pointer-events-none opacity-50',
+        )}
+        href="/forgot-password"
+      >
         Forgot Password?
       </Button>
-      <Form.Button class="w-full">Sign Up</Form.Button>
+      <Form.Button disabled={isSubmitting} class="w-full">
+        {#if isSubmitting}
+          <IconLoader2 size={16} class={cn('mr-2 animate-spin')} />
+        {/if}
+        Sign Up
+      </Form.Button>
     </Form.Root>
 
     <div class="my-5 flex items-center">
@@ -100,7 +132,11 @@
     <div>
       <Button
         variant="outline"
-        class="w-full"
+        class={cn(
+          'w-full',
+          isSubmitting && 'pointer-events-none opacity-50',
+        )}
+        disabled={isSubmitting}
         href={appConfigs.api.googleAuth}
       >
         <Icons.Google size="20" class="mr-3" />

@@ -8,6 +8,8 @@ import { sessions } from './sessions';
 import { socials } from './socials';
 import { addresses } from './addresses';
 import { emailVerifications } from './email-verifications';
+import { createSelectSchema } from 'drizzle-typebox';
+import { Static } from '@sinclair/typebox';
 
 export const users = pgTable('users', {
   id: varchar('id', {
@@ -20,8 +22,8 @@ export const users = pgTable('users', {
   avatar: varchar('avatar'),
   phoneNumber: varchar('phone_number'),
   description: varchar('description'),
-  createdAt: timestamp('created_at').notNull().defaultNow(),
-  updatedAt: timestamp('updated_at').notNull().defaultNow(),
+  createdAt: timestamp('created_at', { mode: 'string' }).notNull().defaultNow(),
+  updatedAt: timestamp('updated_at', { mode: 'string' }).notNull().defaultNow(),
 });
 
 export const userRelations = relations(users, ({ many, one }) => ({
@@ -40,3 +42,7 @@ export const userRelations = relations(users, ({ many, one }) => ({
     references: [addresses.userId],
   }),
 }));
+
+export const userSchema = createSelectSchema(users);
+
+export type User = Static<typeof userSchema>;

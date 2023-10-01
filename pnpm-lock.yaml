@@ -156,8 +156,11 @@ importers:
       drizzle-orm:
         specifier: ^0.28.6
         version: 0.28.6(@types/pg@8.10.2)(bun-types@1.0.3)(pg@8.11.3)
+      drizzle-typebox:
+        specifier: ^0.1.1
+        version: 0.1.1(@sinclair/typebox@0.31.17)(drizzle-orm@0.28.6)
       elysia:
-        specifier: ^0.7.15
+        specifier: 0.7.15
         version: 0.7.15(@sinclair/typebox@0.31.17)(typescript@5.0.2)
       lucia:
         specifier: ^2.7.0
@@ -270,15 +273,15 @@ importers:
   packages/libs:
     dependencies:
       '@elysiajs/eden':
-        specifier: ^0.7.4
-        version: 0.7.4(elysia@0.7.13)
+        specifier: 0.7.4
+        version: 0.7.4(elysia@0.7.15)
     devDependencies:
       api:
         specifier: workspace:*
         version: link:../../apps/api
       elysia:
-        specifier: ^0.7.13
-        version: 0.7.13(typescript@5.0.2)
+        specifier: 0.7.15
+        version: 0.7.15(@sinclair/typebox@0.31.17)(typescript@5.0.2)
       tsconfig:
         specifier: workspace:*
         version: link:../tsconfig
@@ -1809,7 +1812,7 @@ packages:
       elysia: 0.7.15(@sinclair/typebox@0.31.17)(typescript@5.0.2)
     dev: false
 
-  /@elysiajs/eden@0.7.4(elysia@0.7.13):
+  /@elysiajs/eden@0.7.4(elysia@0.7.15):
     resolution: {integrity: sha512-ehp2xO2lf/HgLS3m0SxIcNLGF8Irep4oQp1uK1gQyy0swz693DbvezU7UAfvAhJcZVvCjNOp08YH36WLmjM4aQ==}
     peerDependencies:
       '@sinclair/typebox': '*'
@@ -1818,7 +1821,7 @@ packages:
       '@sinclair/typebox':
         optional: true
     dependencies:
-      elysia: 0.7.13(typescript@5.0.2)
+      elysia: 0.7.15(@sinclair/typebox@0.31.17)(typescript@5.0.2)
     dev: false
 
   /@elysiajs/static@0.6.0(elysia@0.7.15):
@@ -3334,7 +3337,6 @@ packages:
 
   /@sinclair/typebox@0.31.17:
     resolution: {integrity: sha512-GVYVHHOGINx+DT2DwjXoCQO0mRpztYKyb3d48tucuqhjhHpQYGp7Xx7dhhQGzILx/beuBrzfITMC7/5X7fw+UA==}
-    dev: false
 
   /@sinonjs/commons@3.0.0:
     resolution: {integrity: sha512-jXBtWAF4vmdNmZgD5FoKsVLv3rPgDnLgPbU84LIJ3otV44vJlDRokVng5v8NFJdCf/da9legHcKaRuZs4L7faA==}
@@ -5623,6 +5625,16 @@ packages:
       pg: 8.11.3
     dev: false
 
+  /drizzle-typebox@0.1.1(@sinclair/typebox@0.31.17)(drizzle-orm@0.28.6):
+    resolution: {integrity: sha512-eNIDe+EOCB96/bbRHOPbrC+bsuCXFd2H0/96Fl0cJkY+NKnu2qLTnGI6ILXPbyu82Yr1tsShlzDypw+VeCDqaQ==}
+    peerDependencies:
+      '@sinclair/typebox': '>=0.17.6'
+      drizzle-orm: '>=0.23.13'
+    dependencies:
+      '@sinclair/typebox': 0.31.17
+      drizzle-orm: 0.28.6(@types/pg@8.10.2)(bun-types@1.0.3)(pg@8.11.3)
+    dev: false
+
   /editorconfig@1.0.4:
     resolution: {integrity: sha512-L9Qe08KWTlqYMVvMcTIvMAdl1cDUubzRNYL+WfA4bLDMHe4nemKkpmYzkznE1FwLKu0EEmy6obgQKzMJrg4x9Q==}
     engines: {node: '>=14'}
@@ -5640,27 +5652,6 @@ packages:
 
   /electron-to-chromium@1.4.528:
     resolution: {integrity: sha512-UdREXMXzLkREF4jA8t89FQjA8WHI6ssP38PMY4/4KhXFQbtImnghh4GkCgrtiZwLKUKVD2iTVXvDVQjfomEQuA==}
-
-  /elysia@0.7.13(typescript@5.0.2):
-    resolution: {integrity: sha512-GEPgn9iPK/TMnCY3IQ7Rz+3yY3lbg1bH8/hwJzsz+2ZdUVgBjK16DwADE/KKuphu5xdCeOLYcu3z/1ccOAolEQ==}
-    peerDependencies:
-      '@sinclair/typebox': '>= 0.28.10'
-      openapi-types: '>= 12.0.0'
-      typescript: '>= 5.0.0'
-    peerDependenciesMeta:
-      '@sinclair/typebox':
-        optional: true
-      openapi-types:
-        optional: true
-      typescript:
-        optional: true
-    dependencies:
-      cookie: 0.5.0
-      cookie-signature: 1.2.1
-      eventemitter3: 5.0.1
-      fast-querystring: 1.1.2
-      memoirist: 0.1.4
-      typescript: 5.0.2
 
   /elysia@0.7.15(@sinclair/typebox@0.31.17)(typescript@5.0.2):
     resolution: {integrity: sha512-b1gVxVMb7tlwMFM7NRSCEpYCmtGGeHSzkU4HmocmZmieLYxCEQ2og5kamv38gwvY8Ju41aysv3aKijmPsu5xew==}
@@ -5683,7 +5674,6 @@ packages:
       fast-querystring: 1.1.2
       memoirist: 0.1.4
       typescript: 5.0.2
-    dev: false
 
   /emittery@0.13.1:
     resolution: {integrity: sha512-DeWwawk6r5yR9jFgnDKYt4sLS0LmHJJi3ZOnb5/JdbYwj3nW+FxQnHIjhBKz8YLC7oRNPVM9NQ47I3CVx34eqQ==}
