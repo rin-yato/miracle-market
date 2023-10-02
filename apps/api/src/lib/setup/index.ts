@@ -4,41 +4,31 @@ import { lucia } from '../lucia';
 import { swagger } from './swagger';
 import { cors } from './cors';
 import { errorHandler } from './error-handler';
+import { logger } from './logger';
 import { db } from '@/db/drizzle';
-import { logger } from '@bogeychan/elysia-logger';
-import { StreamLoggerOptions } from '@bogeychan/elysia-logger/src/types';
-import pretty from 'pino-pretty';
 
 export { swagger, cors, errorHandler };
 
-const stream = pretty({
-  colorize: true,
-});
-
-const loggerConfig: StreamLoggerOptions = {
-  level: 'info',
-  stream,
-};
-
 export const setup = new Elysia({ name: 'setup' })
-  .use(logger(loggerConfig))
 
   .decorate({
     db,
+    logger,
   })
 
   // Auth
   .derive(async ctx => {
-    const now = performance.now();
     const authRequest = lucia.handleRequest(ctx);
-
-    console.log('Auth Time:', performance.now() - now, 'ms');
 
     const protectedHandler = async () => {
       try {
         const session = await authRequest.validate();
-        if (!session) throw new Error('Unauthorized');
+        if (!session) {
+          ctx.set.status = 'Unauthorized';
+          throw new Error('Unauthorized');
+        }
       } catch (error) {
+        ctx.set.status = 'Unauthorized';
         throw new Error('Unauthorized');
       }
     };
@@ -47,18 +37,24 @@ export const setup = new Elysia({ name: 'setup' })
   })
 
   // Logger
-  .onStart(({ log }) => log && log.info('Server Started'))
-  .onStop(({ log }) => log && log.info('Server Stopped'))
-  .onRequest(
-    ({ log, request }) =>
-      log &&
-      log.debug(
-        `Request received: ${request.method} ${request.url.toString()}`,
-      ),
+  .onStart(({ logger }) => logger.info('Start', 'Server Started'))
+  .onStop(({ logger }) => logger.info('Stop', 'Server Stopped'))
+  .onRequest(({ logger, request }) =>
+    logger.info(
+      'Request',
+      `${request.method} ${new URL(request.url).pathname}`,
+    ),
   )
-  .onResponse(
-    ({ log, request }) =>
-      log &&
-      log.debug(`Response sent: ${request.method} ${request.url.toString()}`),
-  )
-  .onError(({ log, error }) => log && log.error(error));
+  // .onResponse(({ logger, request }) =>
+  //   logger.debug(
+  //     'Response',
+  //     `${request.method} ${new URL(request.url).pathname}`,
+  //   ),
+  // )
+  .onError(({ logger, error, request }) =>
+    logger.error(
+      'Error',
+      `${request.method} ${new URL(request.url).pathname}`,
+      error.message,
+    ),
+  );

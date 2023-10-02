@@ -4,21 +4,6 @@ import { db } from '@/db/drizzle';
 import { luciaClient } from '@/lib/lucia';
 import { emailVerifications } from '@/db/schema';
 
-export const sessionGuard: Handler = async ({ set, cookie: { session } }) => {
-  if (!session.value) {
-    set.status = 'Unauthorized';
-    return 'Unauthorized';
-  }
-
-  try {
-    await luciaClient.validateSession(session.value);
-  } catch (error) {
-    set.status = 'Unauthorized';
-
-    return 'Unauthorized';
-  }
-};
-
 // Handle token generation for email verification
 const EMAIL_VERIFICATION_TOKEN_EXPIRES_IN = 1000 * 60 * 60; // 1 hour
 

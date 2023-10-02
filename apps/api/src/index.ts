@@ -9,7 +9,7 @@ const app = new Elysia()
   .use(swagger)
   .onError(errorHandler)
   .use(AuthModule)
-  .get('/', async ctx => {
+  .get('/', async () => {
     return await db.query.users.findMany();
   })
   .listen(3005);

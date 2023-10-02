@@ -1,4 +1,4 @@
-import { Context, Elysia, t } from 'elysia';
+import { Elysia, t } from 'elysia';
 import { OAuthRequestError } from '@lucia-auth/oauth';
 import { Value } from '@sinclair/typebox/value';
 import { userSchema } from '../../db/schema/users';
@@ -215,8 +215,6 @@ export const AuthModule = new Elysia({
   .get(
     '/sign-out',
     async ({ cookie: { session }, set, lucia }) => {
-      await lucia.protectedHandler();
-
       await lucia.invalidateSession(session.value);
 
       // Clear session cookie
@@ -239,8 +237,6 @@ export const AuthModule = new Elysia({
 
   // Get userId
   .derive(async ({ cookie: { session }, lucia }) => {
-    // await lucia.protectedHandler();
-    console.log('here');
     const currentSession = await lucia.getSession(session.value);
 
     return {
