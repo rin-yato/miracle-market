@@ -15,7 +15,7 @@ const format = (
   format: string,
   removeFormat?: string,
 ): string => {
-  return `${format}${text}${removeFormat || DEFAULT_TEXT_FORMAT}`;
+  return `${format}${text}${removeFormat ? removeFormat : DEFAULT_TEXT_FORMAT}`;
 };
 
 const bgFormat = (text: string, colorCode: number): string => {

@@ -4,8 +4,8 @@ import { lucia } from '../lucia';
 import { swagger } from './swagger';
 import { cors } from './cors';
 import { errorHandler } from './error-handler';
-import { logger } from './logger';
 import { db } from '@/db/drizzle';
+import { dim, logger } from './logger';
 
 export { swagger, cors, errorHandler };
 
