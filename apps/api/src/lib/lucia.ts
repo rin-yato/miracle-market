@@ -22,10 +22,6 @@ export const luciaClient = initLucia({
   env:
     (process.env.ENV ?? process.env.NODE_ENV) === 'production' ? 'PROD' : 'DEV',
 
-  experimental: {
-    debugMode: true,
-  },
-
   sessionCookie: {
     expires: false,
   },
