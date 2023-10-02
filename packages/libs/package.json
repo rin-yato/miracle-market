@@ -12,6 +12,6 @@
     "api": "workspace:*",
     "elysia": "0.7.15",
     "tsconfig": "workspace:*",
-    "typescript": "^5.0.0"
+    "typescript": "^5.2.2"
   }
 }

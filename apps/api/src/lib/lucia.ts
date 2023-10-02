@@ -3,9 +3,9 @@ import { elysia } from 'lucia/middleware';
 import { pg } from '@lucia-auth/adapter-postgresql';
 import { redis } from '@lucia-auth/adapter-session-redis';
 import { google } from '@lucia-auth/oauth/providers';
-import type { Handler } from 'elysia';
-import { connectionPool, redisClient } from '@/lib/db/drizzle';
-import { secrets } from '@/constant/secrets';
+import type { Context, Handler, LocalHook } from 'elysia';
+import { connectionPool, redisClient } from '@/db/drizzle';
+import { secrets } from '@/lib/constant/secrets';
 
 export const luciaClient = initLucia({
   adapter: {
@@ -56,7 +56,7 @@ export type Auth = typeof luciaClient & {
   google: typeof googleAuth;
 };
 
-export const sessionGuard: Handler = async ({ set, cookie: { session } }) => {
+export const sessionGuard = async ({ set, cookie: { session } }: Context) => {
   if (!session.value) {
     set.status = 'Unauthorized';
     return 'Unauthorized';

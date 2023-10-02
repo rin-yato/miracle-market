@@ -1,23 +1,27 @@
-import { Elysia, t } from 'elysia';
+import { Context, Elysia, t } from 'elysia';
 import { OAuthRequestError } from '@lucia-auth/oauth';
 import { Value } from '@sinclair/typebox/value';
+import { userSchema } from '../../db/schema/users';
+import { setup } from '../../lib/setup';
 import { authSchema, signupSchema } from './schema';
 import {
   generateEmailVerificationToken,
   validateEmailVerificationToken,
 } from './util';
 import { sendVerificationEmail } from './email';
-import { lucia } from '@/lib/lucia';
-import { db } from '@/lib/db/drizzle';
-import { type User, userSchema } from '@/lib/db/schema/users';
 import { betterTryCatch } from '@/lib/util/flow';
 
-export const AuthModule = new Elysia({ prefix: '/auth' })
+export const AuthModule = new Elysia({
+  prefix: 'auth',
+  seed: 'auth',
+  name: 'auth',
+})
+  .use(setup)
 
   // Sign up with email and password
   .post(
     '/sign-up',
-    async ({ body: { email, password, redirectUrl }, set }) => {
+    async ({ body: { email, password, redirectUrl }, lucia, set }) => {
       const createUser = lucia.createUser({
         key: {
           password,
@@ -58,7 +62,7 @@ export const AuthModule = new Elysia({ prefix: '/auth' })
   // Sign in with email and password
   .post(
     '/sign-in',
-    async ({ set, cookie: { session }, body }) => {
+    async ({ set, cookie: { session }, lucia, body }) => {
       const { email, password } = body;
 
       try {
@@ -98,7 +102,7 @@ export const AuthModule = new Elysia({ prefix: '/auth' })
   )
 
   // Sign in with Google
-  .get('/google', async ({ cookie, set }) => {
+  .get('/google', async ({ cookie, set, lucia }) => {
     const [url, state] = await lucia.google.getAuthorizationUrl();
 
     cookie['google-oauth-state'].set({
@@ -114,7 +118,7 @@ export const AuthModule = new Elysia({ prefix: '/auth' })
   // Handle Email verification
   .get(
     '/verify-email/:token',
-    async ({ params: { token }, query, set, cookie: { session } }) => {
+    async ({ params: { token }, query, lucia, set, cookie: { session } }) => {
       try {
         const { redirectUrl } = query;
         if (!redirectUrl) {
@@ -151,7 +155,7 @@ export const AuthModule = new Elysia({ prefix: '/auth' })
   )
 
   // Handle Google callback
-  .get('/google/callback', async ({ cookie, query, set }) => {
+  .get('/google/callback', async ({ cookie, query, lucia, set }) => {
     const storedState = cookie['google-oauth-state'].value;
     const state = query.state;
     const code = query.code;
@@ -204,26 +208,15 @@ export const AuthModule = new Elysia({ prefix: '/auth' })
     }
   })
 
-  // Handle routes guard
-  .onBeforeHandle(ctx => lucia.sessionGuard(ctx))
-
-  // Validate session
-  .post(
-    '/validate',
-    async ({ cookie: { session } }) => {
-      return lucia.validateSession(session.value);
-    },
-    {
-      detail: {
-        tags: ['Auth'],
-      },
-    },
-  )
+  // ---- Protected Routes ---- //
+  .derive(async ({ lucia }) => await lucia.protectedHandler())
 
   // Sign out
   .get(
     '/sign-out',
-    async ({ cookie: { session }, set }) => {
+    async ({ cookie: { session }, set, lucia }) => {
+      await lucia.protectedHandler();
+
       await lucia.invalidateSession(session.value);
 
       // Clear session cookie
@@ -245,18 +238,20 @@ export const AuthModule = new Elysia({ prefix: '/auth' })
   )
 
   // Get userId
-  .derive(async ({ cookie: { session } }) => {
+  .derive(async ({ cookie: { session }, lucia }) => {
+    // await lucia.protectedHandler();
+    console.log('here');
     const currentSession = await lucia.getSession(session.value);
 
     return {
-      userId: currentSession.user.userId as string,
+      userId: currentSession.user.userId,
     };
   })
 
   // Get user profile
   .get(
     '/profile',
-    async ({ userId, set }) => {
+    async ({ set, db, userId }) => {
       const userFound = await db.query.users.findFirst({
         where: (user, { eq }) => eq(user.id, userId),
       });
@@ -274,7 +269,7 @@ export const AuthModule = new Elysia({ prefix: '/auth' })
       }
 
       set.status = 'OK';
-      return userFound as User;
+      return userFound;
     },
     {
       detail: {
@@ -288,7 +283,7 @@ export const AuthModule = new Elysia({ prefix: '/auth' })
   // Delete user
   .delete(
     '/user',
-    async ({ userId, cookie: { session } }) => {
+    async ({ userId, cookie: { session }, lucia }) => {
       await lucia.deleteDeadUserSessions(session.value);
       await lucia.deleteUser(userId);
 

@@ -1,48 +1,17 @@
 import { Elysia } from 'elysia';
-import { swagger } from '@elysiajs/swagger';
-import { cors } from '@elysiajs/cors';
 import { AuthModule } from './api/auth';
-import { db } from './lib/db/drizzle';
+import { db } from './db/drizzle';
+import { cors, errorHandler, setup, swagger } from './lib/setup';
 
 const app = new Elysia()
-  .use(
-    cors({
-      credentials: true,
-      origin: 'http://localhost:5173',
-      allowedHeaders: ['Content-Type', 'Cookie'],
-    }),
-  )
-  .onError(({ error }) => {
-    return error;
-  })
-  .use(
-    swagger({
-      documentation: {
-        info: {
-          title: 'Miracle Market API',
-          version: '0.0.1',
-          contact: {
-            name: 'RinYato',
-            email: 'chearithorn@gmail.com',
-            url: 'https://rinyato.com',
-          },
-        },
-        components: {
-          securitySchemes: {
-            cookieAuth: {
-              type: 'apiKey',
-              in: 'cookie',
-              name: 'session',
-              description:
-                'Authentication is handle via session cookie, just go to sign-in after that you can access all API. **Note** No need to set this manually, just go to `/auth/sign-in`!',
-            },
-          },
-        },
-      },
-    }),
-  )
+  .use(setup)
+  .use(cors)
+  .use(swagger)
+  .onError(errorHandler)
   .use(AuthModule)
-  .get('/', async () => db.query.categories.findMany())
+  .get('/', async ctx => {
+    return await db.query.users.findMany();
+  })
   .listen(3005);
 
 console.log(

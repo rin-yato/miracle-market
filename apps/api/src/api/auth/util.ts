@@ -1,8 +1,8 @@
 import type { Handler } from 'elysia';
 import { isWithinExpiration } from 'lucia/utils';
-import { db } from '@/lib/db/drizzle';
+import { db } from '@/db/drizzle';
 import { luciaClient } from '@/lib/lucia';
-import { emailVerifications } from '@/lib/db/schema';
+import { emailVerifications } from '@/db/schema';
 
 export const sessionGuard: Handler = async ({ set, cookie: { session } }) => {
   if (!session.value) {
@@ -22,7 +22,7 @@ export const sessionGuard: Handler = async ({ set, cookie: { session } }) => {
 // Handle token generation for email verification
 const EMAIL_VERIFICATION_TOKEN_EXPIRES_IN = 1000 * 60 * 60; // 1 hour
 
-export async function generateEmailVerificationToken (userId: string) {
+export async function generateEmailVerificationToken(userId: string) {
   const storedUserTokens = await db.query.emailVerifications.findMany({
     where: (field, operator) => {
       return operator.eq(field.userId, userId);
@@ -30,7 +30,7 @@ export async function generateEmailVerificationToken (userId: string) {
   });
 
   if (storedUserTokens.length > 0) {
-    const reuseableStoredToken = storedUserTokens.find((token) => {
+    const reuseableStoredToken = storedUserTokens.find(token => {
       // Check if token is within 30mn of expiration
       return isWithinExpiration(
         Number(token.expires) - EMAIL_VERIFICATION_TOKEN_EXPIRES_IN / 2,
@@ -60,8 +60,8 @@ export async function generateEmailVerificationToken (userId: string) {
 }
 
 // Handle token validation for email verification
-export async function validateEmailVerificationToken (token: string) {
-  const storedToken = await db.transaction(async (trx) => {
+export async function validateEmailVerificationToken(token: string) {
+  const storedToken = await db.transaction(async trx => {
     const storedToken = await trx.query.emailVerifications.findFirst({
       where: (field, operator) => operator.eq(field.id, token),
     });

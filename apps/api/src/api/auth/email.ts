@@ -1,6 +1,6 @@
 import { Resend } from 'resend';
-import { secrets } from '@/constant/secrets';
-import { baseUrl } from '@/constant/env';
+import { secrets } from '@/lib/constant/secrets';
+import { baseUrl } from '@/lib/constant/env';
 
 interface EmailTemplateProps {
   title: string;
