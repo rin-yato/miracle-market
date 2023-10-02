@@ -16,8 +16,8 @@ export const users = pgTable('users', {
     // Change this when using custom user ids
     length: 15,
   }).primaryKey(),
-  username: varchar('username').unique(),
-  email: varchar('email').unique(),
+  username: varchar('username').unique().notNull(),
+  email: varchar('email').unique().notNull(),
   emailVerified: boolean('emailVerified').notNull().default(false),
   avatar: varchar('avatar'),
   phoneNumber: varchar('phone_number'),

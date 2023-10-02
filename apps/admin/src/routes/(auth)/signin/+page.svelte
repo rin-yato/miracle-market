@@ -23,8 +23,6 @@
 
     isSubmitting = true;
 
-    const test = await eden.auth.profile.get()
-
     const toastId = toast.loading('Signing in...');
 
     const { email, password } = event.form.data;
@@ -34,6 +32,7 @@
       password,
     });
 
+    console.log('res', res);
     if (res.error) {
       const err = parseError(res.error.value);
       toast.error(err.message, {
